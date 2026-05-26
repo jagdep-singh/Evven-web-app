@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
   title: "EvenUp Web",
@@ -27,12 +18,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html
-        lang="en"
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      >
-        <body className="min-h-full flex flex-col">{children}</body>
-      </html>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="h-full antialiased"
+    >
+      <head>
+        <link 
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1&display=swap" 
+          rel="stylesheet" 
+        />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Xanh+Mono:ital@0;1&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
