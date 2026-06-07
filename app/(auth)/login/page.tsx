@@ -6,6 +6,7 @@ import { Eye, EyeOff, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 import { useAuthStore } from "@/store/auth-store";
 import { CharacterAnimation } from "@/components/characters/CharacterAnimation";
@@ -38,40 +39,9 @@ export default function Login() {
   }
 
   return (
-    <div className="relative min-h-screen flex lg:grid lg:grid-cols-2">
-
-      {/* ── Left – animation panel ─────────────────────────────────────────── */}
-      <div className="hidden lg:flex relative flex-col justify-center bg-background from-primary/90 via-primary to-primary/80 p-12 text-primary-foreground overflow-hidden">
-        {/* Characters */}
-        <div className="flex-1 flex items-center justify-end">
-          <CharacterAnimation
-            isEmailFocused={isEmailFocused}
-            isPasswordFocused={isPasswordFocused}
-            password={password}
-            showPassword={showPassword}
-          />
-        </div>
-
-        {/* Footer links */}
-        <div className="relative z-20 flex items-center gap-8 text-sm text-primary-foreground/60">
-          {["Privacy Policy", "Terms of Service", "Contact"].map((l) => (
-            <a key={l} href="#" className="hover:text-primary-foreground transition-colors">
-              {l}
-            </a>
-          ))}
-        </div>
-
-        {/* Decorative blobs */}
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" />
-        <div className="absolute top-1/4 right-1/4 size-64 bg-primary-foreground/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 size-96 bg-primary-foreground/5 rounded-full blur-3xl" />
-      </div>
-
-      {/* ── Right – floating form panel ────────────────────────────────────── */}
-      <div className=" w-full flex items-center justify-start p-4 lg:p-8 bg-background relative">
         <div className="w-full max-w-[420px] lg:max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
 
-          <div className="absolute -inset-4 lg:-inset-6 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-4xl blur-2xl -z-10 opacity-60" />
+          <div className="absolute -inset-4 lg:-inset-6 from-primary/10 via-primary/5 to-transparent rounded-4xl blur-2xl -z-10 opacity-60" />
 
           <div className="rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl p-8 shadow-xl ring-1 ring-white/10">
 
@@ -162,13 +132,11 @@ export default function Login() {
 
             <div className="text-center text-sm text-muted-foreground mt-8">
               Don't have an account?{" "}
-              <a href="/signup" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+              <Link href="/signup" className="text-primary font-semibold hover:text-primary/80 transition-colors">
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 }
