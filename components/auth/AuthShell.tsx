@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { CharacterAnimation } from "@/components/characters/CharacterAnimation";
@@ -19,14 +20,16 @@ export function AuthShell({
       <div className="relative flex h-full">
 
         <div className="fixed top-6 left-8 z-50">
-          <Image
-            src="/EvenUp-white.svg"
-            alt="EvenUp"
-            width={70}
-            height={70}
-            className="invert"
-            priority
-          />
+          <Link href="/">
+            <Image
+              src="/EvenUp-white.svg"
+              alt="EvenUp"
+              width={70}
+              height={70}
+              className="invert"
+              priority
+            />
+          </Link>
         </div>
 
         {/* LEFT SLOT */}
