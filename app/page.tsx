@@ -178,11 +178,8 @@ export default function HomePage() {
     <main ref={mainRef} className="bg-[var(--evven-background)] text-[var(--evven-text-primary)]">
       <header className="fixed inset-x-0 top-0 z-50 px-6 py-5">
         <div className="mx-auto flex max-w-6xl items-center justify-between rounded-2xl bg-white/20 backdrop-blur-2xl border border-white/30 px-8 py-4 shadow-lg">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-wide text-[var(--evven-text-primary)]">
-            <div className="w-8 h-8 rounded-lg bg-[var(--evven-accent-primary)] flex items-center justify-center text-white text-sm font-bold">
-              E
-            </div>
-            Evven
+          <Link href="/" className="flex items-center gap-2">
+            <img src="/EvenUp-black.svg" alt="Evven" className="w-8 h-8" />
           </Link>
 
           <nav className="hidden items-center gap-10 md:flex">
@@ -459,7 +456,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <p className="font-semibold text-[var(--evven-text-primary)]">Evven</p>
+              <div className="flex items-center gap-2">
+                <img src="/EvenUp-black.svg" alt="Evven" className="w-6 h-6" />
+                <p className="font-semibold text-[var(--evven-text-primary)]">Evven</p>
+              </div>
               <p className="text-sm text-[var(--evven-text-muted)]">Split expenses cleanly with groups, trips, and roommates.</p>
             </div>
             <div className="flex flex-wrap items-center gap-6 text-sm">
