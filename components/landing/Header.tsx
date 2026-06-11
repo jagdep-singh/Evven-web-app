@@ -20,9 +20,9 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-6 py-5">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-2xl bg-white/20 backdrop-blur-2xl border border-white/30 px-8 py-4 shadow-lg">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full bg-white/20 backdrop-blur-2xl border border-white/30 px-8 py-4 shadow-lg">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/EvenUp-black.svg" alt="Evven" className="w-8 h-8" />
+          <img src="/EvenUp-black.png" alt="Evven" className="w-12 h-10" />
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
