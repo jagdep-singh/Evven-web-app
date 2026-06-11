@@ -1,53 +1,46 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Grainient from "@/components/ui/Grainient";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pt-32 sm:pt-48 lg:pt-64 pb-32 sm:pb-48 lg:pb-56">
-      <div className="mx-auto max-w-5xl">
-        <div className="text-center space-y-8">
-          <div className="space-y-6">
-            <h1 className="hero-heading text-6xl sm:text-7xl lg:text-8xl font-heading tracking-tight leading-tight">
-              Keep shared costs fair, clear, and totally handled.
-            </h1>
-            <p className="hero-subheading mx-auto max-w-2xl text-xl sm:text-2xl text-[var(--evven-text-muted)] leading-relaxed">
-              Evven makes group expense tracking simple. Log costs, split automatically, and settle without the awkward conversations.
-            </p>
-          </div>
-
-          <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/signup">
-              <Button className="rounded-full px-10 py-3.5 text-base bg-[var(--evven-accent-primary)] hover:bg-[var(--evven-accent-primary)]/90 text-white">
-                Get started free
-              </Button>
-            </Link>
-            <a href="https://github.com/jagdep-singh/Evven" target="_blank" rel="noreferrer">
-              <Button variant="outline" className="rounded-full px-10 py-3.5 text-base border-[var(--evven-border)] hover:bg-[var(--evven-surface)]">
-                View on GitHub
-              </Button>
-            </a>
-          </div>
-        </div>
-
-        <div className="stats-card mt-28 sm:mt-32 rounded-2xl border border-[var(--evven-border)] bg-white p-8 sm:p-12 shadow-lg">
-          <div className="grid gap-12 sm:grid-cols-3">
-            <div className="text-center space-y-3">
-              <p className="text-4xl sm:text-5xl font-semibold text-[var(--evven-accent-primary)]">25%</p>
-              <p className="text-sm text-[var(--evven-text-muted)]">Avg. time saved</p>
-            </div>
-            <div className="text-center space-y-3">
-              <p className="text-4xl sm:text-5xl font-semibold text-[var(--evven-accent-primary)]">1.2k+</p>
-              <p className="text-sm text-[var(--evven-text-muted)]">Groups onboarded</p>
-            </div>
-            <div className="text-center space-y-3">
-              <p className="text-4xl sm:text-5xl font-semibold text-[var(--evven-accent-primary)]">3.4k+</p>
-              <p className="text-sm text-[var(--evven-text-muted)]">Settlements closed</p>
-            </div>
-          </div>
-        </div>
+    <section className="relative w-screen h-[120vh] overflow-hidden bg-background">
+      {/* Background Grid Distortion */}
+      <div className="absolute inset-0 flex h-[120vh] w-full items-center justify-center">
+        <Grainient
+            color1="#325149"
+            color2="#faf8f5"
+            color3="#8b8480"
+            timeSpeed={1.2}
+            colorBalance={-0.07}
+            warpStrength={0.3}
+            warpFrequency={3.7}
+            warpSpeed={1.4}
+            warpAmplitude={50}
+            blendAngle={29}
+            blendSoftness={0.64}
+            rotationAmount={580}
+            noiseScale={1.65}
+            grainAmount={0.06}
+            grainScale={0.2}
+            grainAnimated={false}
+            contrast={1.35}
+            gamma={0.95}
+            saturation={1.3}
+            centerX={0}
+            centerY={0}
+            zoom={0.9}
+          />
       </div>
+
+
+      <div className="relative z-10 flex flex-col h-[100vh] w-full items-center justify-center px-6 pointer-events-none -translate-y-8">
+      {/* Add your hero content here */}
+        <h1 className="text-3xl text-slate-800">this is the content for now <br /> there will be some actual content here . 😭</h1>
+      </div>
+
+      {/* Bottom blur gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-[20vh] bg-gradient-to-b from-transparent to-[#faf8f5] z-20" />
     </section>
   );
 }
