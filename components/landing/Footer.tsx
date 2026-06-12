@@ -1,39 +1,243 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const node = footerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-[var(--evven-border)] bg-white px-6 py-12">
-      <div className="mx-auto max-w-5xl">
-        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <img src="/EvenUp-black.svg" alt="Evven" className="w-6 h-6" />
-              <p className="font-semibold text-[var(--evven-text-primary)]">Evven</p>
+    <footer
+      ref={footerRef}
+      className={`
+        relative
+        min-h-[95vh]
+        overflow-hidden
+        bg-[var(--evven-accent-primary)]
+        text-white
+        transition-all
+        duration-1000
+        ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
+      `}
+    >
+      {/* Grid */}
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px)",
+            backgroundSize: "8.333% 100%",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 flex min-h-[95vh] flex-col">
+        {/* Top statement */}
+        <div className="px-6 md:px-10 lg:px-14 pt-20 md:pt-24">
+          <h2
+            className="
+              max-w-3xl
+              font-heading
+              text-[clamp(3rem,6vw,6rem)]
+              leading-[0.88]
+              tracking-[-0.05em]
+            "
+          >
+            Split fairly.
+            <br />
+            Stay friends.
+          </h2>
+        </div>
+
+        {/* Center logo */}
+        <div className="flex flex-1 items-center justify-center">
+          <h1
+            className="
+              select-none
+              font-heading
+              font-bold
+              leading-none
+              tracking-[-0.08em]
+              text-[clamp(6rem,18vw,18rem)]
+              text-white/95
+            "
+          >
+            EVVEN
+          </h1>
+        </div>
+
+        {/* Bottom content */}
+        <div className="border-t border-white/10">
+          <div className="grid lg:grid-cols-[1fr_30vw]">
+            {/* Content */}
+            <div className="px-6 md:px-10 lg:px-14 py-14">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+                {/* Product */}
+                <div>
+                  <p className="mb-5 text-[10px] uppercase tracking-[0.25em] text-white/50">
+                    Product
+                  </p>
+
+                  <div className="flex flex-col gap-3 text-sm text-white/70">
+                    <Link href="#features" className="hover:text-white transition-colors">
+                      Features
+                    </Link>
+
+                    <Link href="#pricing" className="hover:text-white transition-colors">
+                      Pricing
+                    </Link>
+
+                    <Link href="#faq" className="hover:text-white transition-colors">
+                      FAQ
+                    </Link>
+
+                    <Link href="#security" className="hover:text-white transition-colors">
+                      Security
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Resources */}
+                <div>
+                  <p className="mb-5 text-[10px] uppercase tracking-[0.25em] text-white/50">
+                    Resources
+                  </p>
+
+                  <div className="flex flex-col gap-3 text-sm text-white/70">
+                    <Link href="#faq" className="hover:text-white transition-colors">
+                      FAQ
+                    </Link>
+
+                    <Link href="#" className="hover:text-white transition-colors">
+                      Guides
+                    </Link>
+
+                    <Link href="#" className="hover:text-white transition-colors">
+                      Support
+                    </Link>
+
+                    <Link href="#" className="hover:text-white transition-colors">
+                      Status
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Company */}
+                <div>
+                  <p className="mb-5 text-[10px] uppercase tracking-[0.25em] text-white/50">
+                    Company
+                  </p>
+
+                  <div className="flex flex-col gap-3 text-sm text-white/70">
+                    <Link href="/about" className="hover:text-white transition-colors">
+                      About
+                    </Link>
+
+                    <a
+                      href="mailto:hello@evven.app"
+                      className="hover:text-white transition-colors"
+                    >
+                      Contact
+                    </a>
+
+                    <Link href="/privacy" className="hover:text-white transition-colors">
+                      Privacy
+                    </Link>
+
+                    <Link href="/terms" className="hover:text-white transition-colors">
+                      Terms
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Social */}
+                <div>
+                  <p className="mb-5 text-[10px] uppercase tracking-[0.25em] text-white/50">
+                    Social
+                  </p>
+
+                  <div className="flex flex-col gap-3 text-sm text-white/70">
+                    <a href="#" className="hover:text-white transition-colors">
+                      GitHub
+                    </a>
+
+                    <a href="#" className="hover:text-white transition-colors">
+                      X
+                    </a>
+
+                    <a href="#" className="hover:text-white transition-colors">
+                      LinkedIn
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-16 border-t border-white/10 pt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+                <p className="max-w-md text-sm leading-relaxed text-white/55">
+                  Less time settling bills.<br/>More time making memories.
+                </p>
+
+                <p className="text-[11px] tracking-[0.15em] text-white/40">
+                  © {year} EVVEN
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-[var(--evven-text-muted)]">
-              Split expenses cleanly with groups, trips, and roommates.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-6 text-sm">
-            <Link href="/signup" className="text-[var(--evven-text-muted)] hover:text-[var(--evven-text-primary)]">
-              Sign up
-            </Link>
-            <a
-              href="https://github.com/jagdep-singh/Evven"
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--evven-text-muted)] hover:text-[var(--evven-text-primary)]"
-            >
-              GitHub
-            </a>
-            <a href="#faq" className="text-[var(--evven-text-muted)] hover:text-[var(--evven-text-primary)]">
-              FAQ
-            </a>
+
+            {/* Reserved illustration space */}
+            <div className="hidden lg:block" />
           </div>
         </div>
       </div>
+
+      {/* Character */}
+        <div
+          className="
+            pointer-events-none
+            absolute
+            right-[-10rem]
+            bottom-[4rem]
+            z-20
+            w-[42vw]
+            h-[42vw]
+            min-w-[620px]
+            min-h-[620px]
+            max-w-[950px]
+            max-h-[950px]
+            select-none
+          "
+        >
+          <Image
+            src="/footer-img.png"
+            alt=""
+            fill
+            priority
+            className="object-contain object-bottom-right"
+          />
+        </div>
     </footer>
   );
 }

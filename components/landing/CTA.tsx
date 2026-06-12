@@ -5,7 +5,17 @@ import { Button } from "@/components/ui/button";
 
 export function CTA() {
   return (
-    <section className="section-animate px-6 py-24 sm:py-32 bg-[var(--evven-background)]">
+    <section
+        className="
+          section-animate
+          px-6
+          py-24
+          sm:py-32
+          mb-20
+          sm:mb-28
+          bg-background
+        "
+      >
       <div className="mx-auto max-w-5xl rounded-3xl bg-[var(--evven-accent-primary)] px-8 sm:px-12 py-16 sm:py-20 text-white">
         <div className="space-y-8">
           <div className="space-y-6">
