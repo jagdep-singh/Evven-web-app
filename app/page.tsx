@@ -18,16 +18,16 @@ export default function HomePage() {
   useLandingAnimations();
 
   return (
-    <main ref={mainRef} className="bg-[var(--evven-background)] text-[var(--evven-text-primary)]">
-      <Header />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <UseCases />
-      <Testimonials />
-      <Pricing />
-      <FAQ />
-      <CTA />
+    <main className="relative">
+        <Header />
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <UseCases />
+        <Testimonials />
+        <Pricing />
+        <FAQ />
+        <CTA />
       <Footer />
     </main>
   );

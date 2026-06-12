@@ -22,7 +22,7 @@ export function Hero() {
             rotationAmount={580}
             noiseScale={1.65}
             grainAmount={0.06}
-            grainScale={0.2}
+            grainScale={5}
             grainAnimated={false}
             contrast={1.35}
             gamma={0.95}
