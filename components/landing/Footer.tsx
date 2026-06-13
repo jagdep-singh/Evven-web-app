@@ -54,7 +54,7 @@ export function Footer() {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col py-20 lg:py-24">
+      <div className="relative z-10 flex flex-col pt-20 pb-0 lg:pt-24">
         {/* Top statement */}
         <div className="px-6 md:px-10 lg:px-14 pt-20 md:pt-24">
           <h2
@@ -93,7 +93,7 @@ export function Footer() {
         <div className="border-t border-white/10">
           <div className="grid lg:grid-cols-[1fr_auto]">
             {/* Content */}
-            <div className="px-6 md:px-10 lg:px-14 py-12">
+            <div className="px-6 md:px-10 lg:px-14 pt-12 pb-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
                 {/* Product */}
                 <div>
