@@ -10,90 +10,102 @@ import Grainient from "@/components/ui/Grainient";
 
 export function TeamsHero() {
   const characterRef = useRef<HTMLDivElement>(null);
-
   const labelRef = useRef<HTMLSpanElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!characterRef.current) return;
-
-    const tl = gsap.timeline();
-
-    tl.from(labelRef.current, {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-    })
-      .from(
-        headingRef.current,
-        {
-          y: 40,
-          opacity: 0,
-          duration: 0.9,
-          ease: "power3.out",
-        },
-        "-=0.35"
-      )
-      .from(
-        paragraphRef.current,
-        {
-          y: 25,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power3.out",
-        },
-        "-=0.45"
-      )
-      .from(
-        buttonsRef.current,
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power3.out",
-        },
-        "-=0.4"
-      )
-      .from(
-        characterRef.current,
-        {
-          opacity: 0,
-          x: 40,
-          duration: 1,
-          ease: "power3.out",
-        },
-        "-=0.8"
+    const ctx = gsap.context(() => {
+      gsap.set(
+        [
+          labelRef.current,
+          headingRef.current,
+          paragraphRef.current,
+          buttonsRef.current,
+        ],
+        { opacity: 0, y: 30 }
       );
+      gsap.set(characterRef.current, { opacity: 0, x: 40 });
 
-    gsap.to(characterRef.current, {
-      y: -20,
-      duration: 3,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut",
-    });
+      const tl = gsap.timeline({ delay: 0.1 });
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 25;
-      const y = (e.clientY / window.innerHeight - 0.5) * 15;
+      tl.to(labelRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: "power3.out",
+      })
+        .to(
+          headingRef.current,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+          },
+          "-=0.35"
+        )
+        .to(
+          paragraphRef.current,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: "power3.out",
+          },
+          "-=0.45"
+        )
+        .to(
+          buttonsRef.current,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        )
+        .to(
+          characterRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.8"
+        );
 
       gsap.to(characterRef.current, {
-        x,
-        y,
-        duration: 1,
-        ease: "power3.out",
+        y: -20,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+        delay: 0.9,
       });
-    };
 
-    window.addEventListener("mousemove", handleMouseMove);
+      const handleMouseMove = (e: MouseEvent) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 25;
+        const y = (e.clientY / window.innerHeight - 0.5) * 15;
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      tl.kill();
-    };
+        gsap.to(characterRef.current, {
+          x,
+          y,
+          duration: 1,
+          ease: "power3.out",
+        });
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    });
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -153,10 +165,7 @@ export function TeamsHero() {
             track spend, split costs fairly, and keep everyone accountable.
           </p>
 
-          <div
-            ref={buttonsRef}
-            className="mt-14 flex items-center gap-6"
-          >
+          <div ref={buttonsRef} className="mt-14 flex items-center gap-6">
             <Link
               href="/signup"
               className="
@@ -171,7 +180,6 @@ export function TeamsHero() {
               "
             >
               Get Started
-
               <ArrowRight
                 size={15}
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -226,4 +234,3 @@ export function TeamsHero() {
     </section>
   );
 }
-
