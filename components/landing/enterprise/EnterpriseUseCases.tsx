@@ -2,35 +2,27 @@
 
 const useCases = [
   {
-    title: "Roommates",
-    description:
-      "Rent, wifi, groceries, and that one person who always 'forgets' their share — Evven keeps it all visible and fair.",
+    title: "Finance Teams",
+    description: "Centralize approvals, enforce spend policy, and close the books faster with clean audit trails.",
   },
   {
-    title: "Trips",
-    description:
-      "Flights, hotels, that 2am taco run — track it as it happens so settling up after the trip takes minutes, not arguments.",
+    title: "Multi-Department Orgs",
+    description: "Give every department its own workspace while finance keeps a unified view across the company.",
   },
   {
-    title: "Couples",
-    description:
-      "Shared rent, date nights, joint savings goals — keep your finances transparent without turning every dinner into a budget meeting.",
-  },
-  {
-    title: "Events",
-    description:
-      "Wedding gifts, group dinners, shared Airbnbs — keep every contribution clear without a single 'wait, did I already pay you back?'",
+    title: "Global Teams",
+    description: "Manage cross-office and cross-currency expenses with consistent policy and reporting everywhere.",
   },
 ];
 
-export function UseCases() {
+export function EnterpriseUseCases() {
   return (
     <section className="section-animate px-6 py-24 sm:py-32 bg-[var(--evven-background)]">
       <div className="mx-auto max-w-5xl">
         <div className="space-y-6 mb-16">
           <p className="section-label">Use Cases</p>
           <h2 className="text-5xl sm:text-6xl font-heading tracking-tight">
-            Works for any group or occasion.
+            Built for organizations of every size.
           </h2>
         </div>
 

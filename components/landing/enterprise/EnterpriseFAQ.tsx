@@ -2,28 +2,23 @@
 
 const faqs = [
   {
-    question: "Do the other people in my group need to sign up too?",
+    question: "Does Evven support SSO?",
     answer:
-      "Nope — invite anyone to a group with a simple link. They can join in seconds and start tracking expenses right away, free.",
+      "Yes. Enterprise plans support SSO via SAML and OIDC, along with SCIM provisioning for automated user management.",
   },
   {
-    question: "Can I use EvenUp for recurring expenses?",
+    question: "How is our data secured?",
     answer:
-      "Yes. You can track subscriptions, monthly bills, and repeated payments with flexible split options.",
+      "All data is encrypted in transit and at rest, with role-based access controls and detailed audit logs for every action.",
   },
   {
-    question: "Is my data shared securely?",
+    question: "Can we get a custom contract and SLA?",
     answer:
-      "Your expense history is stored securely and only visible to the people in your group.",
-  },
-  {
-    question: "Do I need to pay to start?",
-    answer:
-      "No. The basic plan is free forever for unlimited groups — upgrade only if your group needs advanced reporting.",
+      "Yes. Enterprise and Enterprise Plus plans include custom contracts, dedicated support, and tailored SLAs.",
   },
 ];
 
-export function FAQ() {
+export function EnterpriseFAQ() {
   return (
     <section id="faq" className="section-animate bg-white px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-5xl">

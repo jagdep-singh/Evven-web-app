@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
-import Link from "next/link";
-
-import Grainient from "@/components/ui/Grainient";
 import { ArrowRight } from "lucide-react";
 
-export function Hero() {
+import Grainient from "@/components/ui/Grainient";
+
+export function TeamsHero() {
   const characterRef = useRef<HTMLDivElement>(null);
 
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -98,14 +98,14 @@ export function Hero() {
 
   return (
     <section className="relative h-[120vh] w-screen overflow-hidden bg-background">
-      {/* Background Grid Distortion */}
-      <div className="absolute inset-0 flex h-[120vh] w-full items-center justify-center">
+      {/* Background */}
+      <div className="absolute inset-0 flex h-full w-full items-center justify-center">
         <Grainient
-          color1="#325149"
-          color2="#faf8f5"
-          color3="#8b8480"
+          color1="#1e3a5f"
+          color2="#f6f8fa"
+          color3="#8a99ab"
           timeSpeed={1.2}
-          colorBalance={-0.07}
+          colorBalance={-0.05}
           warpStrength={0.3}
           warpFrequency={3.7}
           warpSpeed={1.4}
@@ -119,40 +119,38 @@ export function Hero() {
           grainAnimated={false}
           contrast={1.35}
           gamma={0.95}
-          saturation={1.3}
+          saturation={1.15}
           centerX={0}
           centerY={0}
           zoom={0.9}
         />
       </div>
 
-      {/* HERO CONTENT */}
+      {/* Hero Content */}
       <div className="relative z-10 flex h-[100vh] w-full items-center">
-        {/* Left Content */}
         <div className="ml-[15vw] flex w-full max-w-[720px] flex-col">
           <span
             ref={labelRef}
-            className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-[#000000]"
+            className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-black"
           >
-            For Roommates, Trips & Everything In Between
+            Built For Teams
           </span>
 
           <h1
             ref={headingRef}
-            className="font-hero-heading text-7xl font-black leading-[1]  text-slate-900 md:text-7xl lg:text-[6.5rem]"
+            className="font-hero-heading text-7xl font-black leading-[1] text-slate-900 md:text-7xl lg:text-[6.5rem]"
           >
-            Split bills.
+            Shared costs.
             <br />
-            Not friendships.
+            Zero confusion.
           </h1>
 
           <p
             ref={paragraphRef}
             className="mt-10 max-w-[520px] text-lg leading-[1.75] text-slate-700"
           >
-            Stop doing math in the group chat. Evven tracks every shared expense
-            automatically, settles balances instantly, and keeps the &quot;you still
-            owe me&quot; conversations out of your friendships.
+            Give your team, club, or project a shared expense workspace —
+            track spend, split costs fairly, and keep everyone accountable.
           </p>
 
           <div
@@ -172,7 +170,7 @@ export function Hero() {
                 hover:scale-[1.02]
               "
             >
-              Start splitting for free
+              Get Started
 
               <ArrowRight
                 size={15}
@@ -180,7 +178,8 @@ export function Hero() {
               />
             </Link>
 
-            <button
+            <a
+              href="#how-it-works"
               className="
                 text-sm
                 font-medium
@@ -189,36 +188,42 @@ export function Hero() {
                 hover:text-slate-900
               "
             >
-              See how it works ↓
-            </button>
+              Learn More →
+            </a>
           </div>
         </div>
 
         {/* Character */}
         <div
           ref={characterRef}
-          className="absolute right-50 bottom-0 hidden lg:block"
+          className="
+            absolute
+            right-55
+            bottom-0
+            hidden
+            lg:block
+            z-10
+          "
         >
           <Image
-            src="/hero-img.png"
+            src="/hero-teams-img.png"
             alt="Hero Character"
-            width={600}
-            height={800}
+            width={300}
+            height={500}
             priority
             className="
               pointer-events-none
               select-none
               object-contain
-              animate-[float_6s_ease-in-out_infinite]
-              -scale-x-100
             "
             draggable={false}
           />
         </div>
       </div>
 
-      {/* Bottom blur gradient */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 h-[20vh] bg-gradient-to-b from-transparent to-[#faf8f5]" />
+      {/* Bottom gradient */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 h-[20vh] bg-gradient-to-b from-transparent to-[var(--evven-background)]" />
     </section>
   );
 }
+

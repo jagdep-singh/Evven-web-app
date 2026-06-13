@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import gsap from "gsap";
 import Link from "next/link";
-
-import Grainient from "@/components/ui/Grainient";
 import { ArrowRight } from "lucide-react";
+import Grainient from "@/components/ui/Grainient";
+import { useRef ,useEffect} from "react";
+import Image from 'next/image';
+import gsap from "gsap";
 
-export function Hero() {
+
+export function EnterpriseHero() {
   const characterRef = useRef<HTMLDivElement>(null);
 
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -98,61 +98,57 @@ export function Hero() {
 
   return (
     <section className="relative h-[120vh] w-screen overflow-hidden bg-background">
-      {/* Background Grid Distortion */}
-      <div className="absolute inset-0 flex h-[120vh] w-full items-center justify-center">
+      <div className="absolute inset-0 flex h-full w-full items-center justify-center">
         <Grainient
-          color1="#325149"
-          color2="#faf8f5"
-          color3="#8b8480"
-          timeSpeed={1.2}
-          colorBalance={-0.07}
-          warpStrength={0.3}
-          warpFrequency={3.7}
-          warpSpeed={1.4}
+          color1="#6e1f2e"
+          color2="#faf6f6"
+          color3="#9c8a8c"
+          timeSpeed={1.0}
+          colorBalance={-0.05}
+          warpStrength={0.28}
+          warpFrequency={3.4}
+          warpSpeed={1.2}
           warpAmplitude={50}
           blendAngle={29}
-          blendSoftness={0.64}
-          rotationAmount={580}
-          noiseScale={1.65}
+          blendSoftness={0.6}
+          rotationAmount={520}
+          noiseScale={1.6}
           grainAmount={0.06}
           grainScale={5}
           grainAnimated={false}
           contrast={1.35}
           gamma={0.95}
-          saturation={1.3}
+          saturation={1.15}
           centerX={0}
           centerY={0}
           zoom={0.9}
         />
       </div>
 
-      {/* HERO CONTENT */}
       <div className="relative z-10 flex h-[100vh] w-full items-center">
-        {/* Left Content */}
         <div className="ml-[15vw] flex w-full max-w-[720px] flex-col">
           <span
             ref={labelRef}
-            className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-[#000000]"
+            className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-black"
           >
-            For Roommates, Trips & Everything In Between
+            Enterprise Expense Management
           </span>
 
           <h1
             ref={headingRef}
-            className="font-hero-heading text-7xl font-black leading-[1]  text-slate-900 md:text-7xl lg:text-[6.5rem]"
-          >
-            Split bills.
+            className="text-7xl font-black text-slate-900 md:text-7xl lg:text-[6.5rem] leading-none whitespace-nowrap"
+            >
+            Expense control,
             <br />
-            Not friendships.
-          </h1>
+            at scale.
+            </h1>
 
           <p
             ref={paragraphRef}
             className="mt-10 max-w-[520px] text-lg leading-[1.75] text-slate-700"
           >
-            Stop doing math in the group chat. Evven tracks every shared expense
-            automatically, settles balances instantly, and keeps the &quot;you still
-            owe me&quot; conversations out of your friendships.
+            Centralize spend across departments and offices with enterprise-grade
+            security, approval workflows, and reporting built for finance teams.
           </p>
 
           <div
@@ -172,7 +168,7 @@ export function Hero() {
                 hover:scale-[1.02]
               "
             >
-              Start splitting for free
+              Request a demo
 
               <ArrowRight
                 size={15}
@@ -180,7 +176,8 @@ export function Hero() {
               />
             </Link>
 
-            <button
+            <a
+              href="#how-it-works"
               className="
                 text-sm
                 font-medium
@@ -189,36 +186,40 @@ export function Hero() {
                 hover:text-slate-900
               "
             >
-              See how it works ↓
-            </button>
+              Learn More →
+            </a>
           </div>
         </div>
 
-        {/* Character */}
         <div
           ref={characterRef}
-          className="absolute right-50 bottom-0 hidden lg:block"
+          className="
+            absolute
+            right-55
+            top-40
+            hidden
+            lg:block
+            z-10
+          "
         >
           <Image
-            src="/hero-img.png"
-            alt="Hero Character"
-            width={600}
-            height={800}
+            src="/hero-enterprise-img.png"
+            alt="Enterprise Character"
+            width={420}
+            height={650}
             priority
             className="
               pointer-events-none
               select-none
               object-contain
-              animate-[float_6s_ease-in-out_infinite]
-              -scale-x-100
             "
             draggable={false}
           />
         </div>
       </div>
 
-      {/* Bottom blur gradient */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 h-[20vh] bg-gradient-to-b from-transparent to-[#faf8f5]" />
+      <div className="absolute bottom-0 left-0 right-0 z-20 h-[20vh] bg-gradient-to-b from-transparent to-[var(--evven-background)]" />
     </section>
   );
 }
+

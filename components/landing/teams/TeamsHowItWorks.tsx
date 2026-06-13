@@ -1,21 +1,21 @@
 "use client";
 
-export function HowItWorks() {
+export function TeamsHowItWorks() {
   const steps = [
     {
-      step: "Track",
-      title: "Capture every expense",
-      desc: "Snap a receipt or log it in seconds. Tag who paid and who's in — Evven remembers so you don't have to.",
+      step: "Create",
+      title: "Spin up a workspace",
+      desc: "Set up a shared space for your team, project, or club and invite everyone in seconds.",
     },
     {
-      step: "Split",
-      title: "Split it your way",
-      desc: "Even, by percentage, or custom shares — choose per expense. Evven calculates exact amounts so there's never a debate.",
+      step: "Assign",
+      title: "Log and split costs",
+      desc: "Add expenses as they happen and split them by share, role, or custom rules — Evven handles the math.",
     },
     {
-      step: "Settle",
-      title: "Close the loop",
-      desc: "See live balances, send a settlement reminder, and mark it paid. Done in five minutes, not five arguments.",
+      step: "Reconcile",
+      title: "Stay in sync",
+      desc: "Track balances across the team, send reminders, and close out shared costs without back-and-forth.",
     },
   ];
 
@@ -25,7 +25,7 @@ export function HowItWorks() {
         <div className="space-y-6 mb-16">
           <p className="section-label">How It Works</p>
           <h2 className="text-5xl sm:text-6xl font-heading tracking-tight">
-            Three simple steps to manage group expenses.
+            Three simple steps to manage team expenses.
           </h2>
         </div>
 

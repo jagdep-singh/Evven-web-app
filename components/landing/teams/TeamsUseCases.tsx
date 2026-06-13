@@ -2,35 +2,27 @@
 
 const useCases = [
   {
-    title: "Roommates",
-    description:
-      "Rent, wifi, groceries, and that one person who always 'forgets' their share — Evven keeps it all visible and fair.",
+    title: "Offices & Departments",
+    description: "Track team lunches, supplies, and shared subscriptions without messy spreadsheets.",
   },
   {
-    title: "Trips",
-    description:
-      "Flights, hotels, that 2am taco run — track it as it happens so settling up after the trip takes minutes, not arguments.",
+    title: "Project Teams",
+    description: "Split client dinners, travel, and tools across contributors, even on short-term projects.",
   },
   {
-    title: "Couples",
-    description:
-      "Shared rent, date nights, joint savings goals — keep your finances transparent without turning every dinner into a budget meeting.",
-  },
-  {
-    title: "Events",
-    description:
-      "Wedding gifts, group dinners, shared Airbnbs — keep every contribution clear without a single 'wait, did I already pay you back?'",
+    title: "Clubs & Communities",
+    description: "Manage dues, event costs, and group purchases with full transparency for every member.",
   },
 ];
 
-export function UseCases() {
+export function TeamsUseCases() {
   return (
     <section className="section-animate px-6 py-24 sm:py-32 bg-[var(--evven-background)]">
       <div className="mx-auto max-w-5xl">
         <div className="space-y-6 mb-16">
           <p className="section-label">Use Cases</p>
           <h2 className="text-5xl sm:text-6xl font-heading tracking-tight">
-            Works for any group or occasion.
+            Built for teams of every shape.
           </h2>
         </div>
 

@@ -3,32 +3,26 @@
 const testimonials = [
   {
     quote:
-      "Evven made our travel planning so much easier. No more calculating who paid for what — everything is clear and fair.",
-    name: "Maya R.",
-    role: "Travel group organizer",
+      "Our team used to argue about who covered the last client lunch. Now everyone can see exactly where things stand.",
+    name: "Priya N.",
+    role: "Operations Lead",
   },
   {
     quote:
-      "My roommates love it. We finally stayed on top of utilities and groceries without uncomfortable money talks.",
-    name: "Jordan L.",
-    role: "College student",
-  },
-  {
-    quote:
-      "We used to spend an hour every month reconciling who owed what. Now it takes two minutes.",
-    name: "Priya S.",
-    role: "Apartment co-lease, 4 roommates",
+      "Running our club's events got so much easier. Dues, supplies, venue costs — all split and tracked automatically.",
+    name: "Marcus T.",
+    role: "Club Treasurer",
   },
 ];
 
-export function Testimonials() {
+export function TeamsTestimonials() {
   return (
     <section className="section-animate bg-white px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-5xl">
         <div className="space-y-6 mb-16">
           <p className="section-label">Testimonials</p>
           <h2 className="text-5xl sm:text-6xl font-heading tracking-tight">
-            Trusted by groups everywhere.
+            Trusted by teams everywhere.
           </h2>
         </div>
 

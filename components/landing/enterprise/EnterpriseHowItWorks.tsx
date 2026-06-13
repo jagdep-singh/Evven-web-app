@@ -1,21 +1,21 @@
 "use client";
 
-export function HowItWorks() {
+export function EnterpriseHowItWorks() {
   const steps = [
     {
-      step: "Track",
-      title: "Capture every expense",
-      desc: "Snap a receipt or log it in seconds. Tag who paid and who's in — Evven remembers so you don't have to.",
+      step: "Onboard",
+      title: "Set up your organization",
+      desc: "Connect your identity provider, import your org structure, and define departments and roles.",
     },
     {
-      step: "Split",
-      title: "Split it your way",
-      desc: "Even, by percentage, or custom shares — choose per expense. Evven calculates exact amounts so there's never a debate.",
+      step: "Configure",
+      title: "Set policies and workflows",
+      desc: "Define spend limits, approval chains, and reporting categories that match how your org operates.",
     },
     {
-      step: "Settle",
-      title: "Close the loop",
-      desc: "See live balances, send a settlement reminder, and mark it paid. Done in five minutes, not five arguments.",
+      step: "Monitor",
+      title: "Track and report",
+      desc: "Get real-time visibility into spend across every department, with exportable reports for audits.",
     },
   ];
 
@@ -25,7 +25,7 @@ export function HowItWorks() {
         <div className="space-y-6 mb-16">
           <p className="section-label">How It Works</p>
           <h2 className="text-5xl sm:text-6xl font-heading tracking-tight">
-            Three simple steps to manage group expenses.
+            Get your organization set up in three steps.
           </h2>
         </div>
 

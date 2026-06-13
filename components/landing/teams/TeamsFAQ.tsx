@@ -2,28 +2,23 @@
 
 const faqs = [
   {
-    question: "Do the other people in my group need to sign up too?",
+    question: "How many people can join a team workspace?",
     answer:
-      "Nope — invite anyone to a group with a simple link. They can join in seconds and start tracking expenses right away, free.",
+      "Starter workspaces support up to 5 members. Team and Business plans support unlimited members.",
   },
   {
-    question: "Can I use EvenUp for recurring expenses?",
+    question: "Can I have multiple workspaces?",
     answer:
-      "Yes. You can track subscriptions, monthly bills, and repeated payments with flexible split options.",
+      "Yes, Business plans support multiple workspaces — useful for organizations with several departments or projects.",
   },
   {
-    question: "Is my data shared securely?",
+    question: "Can members have different permission levels?",
     answer:
-      "Your expense history is stored securely and only visible to the people in your group.",
-  },
-  {
-    question: "Do I need to pay to start?",
-    answer:
-      "No. The basic plan is free forever for unlimited groups — upgrade only if your group needs advanced reporting.",
+      "Yes. You can assign admins, members, and viewers so the right people can add, approve, or just monitor spend.",
   },
 ];
 
-export function FAQ() {
+export function TeamsFAQ() {
   return (
     <section id="faq" className="section-animate bg-white px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-5xl">
