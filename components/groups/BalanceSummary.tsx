@@ -53,7 +53,7 @@ export function BalanceSummary({
                       ? `you owe ${formatAmount(payableAmount)}`
                       : `owes you ${formatAmount(Math.abs(n))}`}
                   </span>
-                  {youOwe && (
+                  {youOwe ? (
                     <button
                       onClick={() => onSettle(uid, payableAmount)}
                       className="text-xs px-2.5 py-1 rounded-lg font-medium text-white"
@@ -61,7 +61,7 @@ export function BalanceSummary({
                     >
                       Settle
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </div>
             );

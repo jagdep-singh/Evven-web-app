@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { ArrowLeftRight, CheckCircle, Receipt, Split, Banknote } from "lucide-react";
 import type { GroupDebtBreakdown, Settlement } from "@/types";
 import { formatAmount } from "./group-detail-utils";
-import { invertMatrix, matrixToRows } from "./group-detail-breakdown-utils";
+import { invertMatrix, matrixToRows, subtractMatrix } from "./group-detail-breakdown-utils";
 import type { UserNameFn } from "./group-detail-shared";
 
 type SettlementsSubTab = "past" | "final" | "receivables" | "breakdown";
@@ -24,8 +24,9 @@ export function SettlementsTab({
 }) {
   const [subTab, setSubTab] = useState<SettlementsSubTab>("past");
 
-  const finalSettlements = matrixToRows(debtBreakdown?.simplified ?? null);
-  const receivableView = matrixToRows(invertMatrix(debtBreakdown?.simplified ?? null));
+  const remainingMatrix = subtractMatrix(debtBreakdown?.simplified ?? null, debtBreakdown?.settled ?? null);
+  const finalSettlements = matrixToRows(remainingMatrix);
+  const receivableView = matrixToRows(invertMatrix(remainingMatrix));
 
   const detailedBreakdown = (() => {
     if (!debtBreakdown?.breakdown) return [];
