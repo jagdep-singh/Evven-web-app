@@ -87,7 +87,9 @@ export function BalancesTab({
                   </p>
                   <p
                     className="text-xs mt-0.5"
-                    style={{ color: youOwe ? "#A32D2D" : isPos ? "#0F6E56" : "#A32D2D" }}
+                    style={{
+                      color: youOwe ? "#A32D2D" : isPos ? "#0F6E56" : "#A32D2D",
+                    }}
                   >
                     {n === 0 && !youOwe
                       ? "settled"
@@ -98,7 +100,7 @@ export function BalancesTab({
                           : `owes ${formatAmount(Math.abs(n))}`}
                   </p>
                 </div>
-                {!isMe && youOwe && (
+                {!isMe && youOwe ? (
                   <button
                     onClick={() => onSettle(uid, payableAmount)}
                     className="text-xs px-3 py-1.5 rounded-lg font-medium text-white shrink-0"
@@ -106,7 +108,7 @@ export function BalancesTab({
                   >
                     Settle
                   </button>
-                )}
+                ) : null}
               </div>
             );
           })}

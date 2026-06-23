@@ -20,6 +20,7 @@ import {
 } from "@/services/groups";
 import { useAuthStore } from "@/store/auth-store";
 import { formatAmount, splitEvenly } from "@/components/groups/group-detail-utils";
+import { subtractMatrix } from "@/components/groups/group-detail-breakdown-utils";
 import {
   BalanceSummary,
   BalancesTab,
@@ -346,15 +347,21 @@ export default function GroupDetailPage() {
 
     try {
       const details = await getGroupExpenseWithSplits(groupID, expense.id);
-      setSelectedParticipants(details.splits.map((split) => split.user_id));
+      setSelectedParticipants(
+        details.splits
+          .map((split) => split.user_id)
+          .filter((userId) => splitParticipantIds.includes(userId))
+      );
       const amount = Number(details.expense.amount);
       const nextInputs = Object.fromEntries(
-        details.splits.map((split) => [
-          split.user_id,
-          expense.split_type === "percentage" && amount > 0
-            ? ((Number(split.amount) / amount) * 100).toFixed(2)
-            : String(split.amount),
-        ])
+        details.splits
+          .filter((split) => splitParticipantIds.includes(split.user_id))
+          .map((split) => [
+            split.user_id,
+            expense.split_type === "percentage" && amount > 0
+              ? ((Number(split.amount) / amount) * 100).toFixed(2)
+              : String(split.amount),
+          ])
       );
       setSplitInputs(nextInputs);
     } catch {
@@ -453,10 +460,14 @@ export default function GroupDetailPage() {
   );
 
   const payableDebts = (() => {
-    if (!currentUserId || !debtBreakdown?.simplified?.[currentUserId]) return {};
+    if (!currentUserId || !debtBreakdown) return {};
+
+    const remaining = subtractMatrix(debtBreakdown.simplified, debtBreakdown.settled);
+    const currentDebts = remaining[currentUserId];
+    if (!currentDebts) return {};
 
     return Object.fromEntries(
-      Object.entries(debtBreakdown.simplified[currentUserId])
+      Object.entries(currentDebts)
         .map(([userId, amount]): [string, number] => [userId, Number(amount)])
         .filter(([, amount]) => Number.isFinite(amount) && amount > 0.01)
     );
@@ -467,12 +478,6 @@ export default function GroupDetailPage() {
 
     members.forEach((member) => ids.add(member.user_id));
     if (currentUserId) ids.add(currentUserId);
-    Object.keys(balances).forEach((id) => ids.add(id));
-    expenses.forEach((expense) => ids.add(expense.paid_by));
-    settlements.forEach((settlement) => {
-      ids.add(settlement.payer_id);
-      ids.add(settlement.receiver_id);
-    });
 
     return [...ids];
   })();
