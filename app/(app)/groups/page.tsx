@@ -68,7 +68,7 @@ export default function GroupsPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: "var(--evven-text-muted)" }}>
-              Your spaces
+              Groups · {loading ? "loading" : `${groups.length} active`}
             </p>
             <h1 className="text-2xl font-medium" style={{ color: "var(--evven-text-primary)" }}>
               Groups
@@ -76,8 +76,8 @@ export default function GroupsPage() {
           </div>
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-white transition-all hover:opacity-90"
-            style={{ background: "var(--evven-accent-primary)" }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-90"
+            style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
           >
             <Plus size={15} />
             New group
@@ -99,7 +99,14 @@ export default function GroupsPage() {
 
         {/* Error */}
         {error && !loading && (
-          <div className="rounded-xl p-4 text-sm" style={{ background: "#FEF2F2", color: "#B91C1C" }}>
+          <div
+            className="rounded-[var(--evven-radius-card)] p-4 text-sm"
+            style={{
+              background: "var(--evven-surface)",
+              color: "var(--evven-error)",
+              border: "0.5px solid var(--evven-border)",
+            }}
+          >
             {error}
           </div>
         )}
@@ -107,8 +114,11 @@ export default function GroupsPage() {
         {/* Empty state */}
         {!loading && !error && groups.length === 0 && (
           <div
-            className="rounded-2xl p-10 text-center border"
-            style={{ borderColor: "var(--evven-border)", background: "white" }}
+            className="rounded-[var(--evven-radius-card)] p-10 text-center"
+            style={{
+              border: "0.5px solid var(--evven-border)",
+              background: "var(--color-background-primary, var(--evven-background))",
+            }}
           >
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
@@ -124,8 +134,8 @@ export default function GroupsPage() {
             </p>
             <button
               onClick={() => setShowCreate(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white"
-              style={{ background: "var(--evven-accent-primary)" }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium"
+              style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
             >
               <Plus size={15} />
               Create your first group
@@ -142,10 +152,10 @@ export default function GroupsPage() {
                 <Link
                   key={g.id}
                   href={`/groups/${g.id}`}
-                  className="flex items-center gap-4 px-4 py-3.5 rounded-2xl border transition-all hover:shadow-sm group"
+                  className="flex items-center gap-4 px-4 py-3.5 rounded-[var(--evven-radius-card)] transition-all hover:bg-(--evven-surface) group"
                   style={{
-                    background: "white",
-                    borderColor: "var(--evven-border)",
+                    background: "var(--color-background-primary, var(--evven-background))",
+                    border: "0.5px solid var(--evven-border)",
                   }}
                 >
                   <div
@@ -173,10 +183,17 @@ export default function GroupsPage() {
       {/* Create group modal */}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowCreate(false)} />
           <div
-            className="relative w-full max-w-sm rounded-3xl p-6 shadow-xl"
-            style={{ background: "white", border: "1px solid var(--evven-border)" }}
+            className="absolute inset-0 backdrop-blur-sm"
+            style={{ background: "color-mix(in srgb, var(--evven-text-primary) 30%, transparent)" }}
+            onClick={() => setShowCreate(false)}
+          />
+          <div
+            className="relative w-full max-w-sm rounded-[var(--evven-radius-hero)] p-6 shadow-xl"
+            style={{
+              background: "var(--color-background-primary, var(--evven-background))",
+              border: "0.5px solid var(--evven-border)",
+            }}
           >
             <button
               onClick={() => setShowCreate(false)}
@@ -215,8 +232,8 @@ export default function GroupsPage() {
             <button
               onClick={handleCreate}
               disabled={!newName.trim() || creating}
-              className="w-full py-2.5 rounded-xl text-sm font-medium text-white flex items-center justify-center gap-2 disabled:opacity-50 transition-opacity"
-              style={{ background: "var(--evven-accent-primary)" }}
+              className="w-full py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 transition-opacity"
+              style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
             >
               {creating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
               {creating ? "Creating…" : "Create group"}

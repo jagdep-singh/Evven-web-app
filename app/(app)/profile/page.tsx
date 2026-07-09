@@ -71,14 +71,17 @@ function ProfileEditor({
       <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-7">
           <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Account
+            Account · {user.auth_provider}
           </p>
           <h1 className="text-2xl font-medium">Profile</h1>
         </div>
 
         <div
-          className="mb-4 flex items-center gap-4 rounded-2xl border bg-white p-5"
-          style={{ borderColor: "var(--evven-border)" }}
+          className="mb-4 flex items-center gap-4 rounded-[var(--evven-radius-card)] p-5"
+          style={{
+            background: "var(--color-background-primary, var(--evven-background))",
+            border: "0.5px solid var(--evven-border)",
+          }}
         >
           {profilePicture ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -88,7 +91,10 @@ function ProfileEditor({
               className="size-16 rounded-full object-cover"
             />
           ) : (
-            <div className="flex size-16 items-center justify-center rounded-full bg-secondary text-lg font-semibold text-primary">
+            <div
+              className="flex size-16 items-center justify-center rounded-full text-lg font-semibold"
+              style={{ background: "var(--evven-accent-secondary)", color: "var(--evven-accent-primary)" }}
+            >
               {displayName ? getInitials(displayName) : <UserRound size={22} />}
             </div>
           )}
@@ -102,8 +108,11 @@ function ProfileEditor({
         </div>
 
         <div
-          className="mb-4 rounded-2xl border bg-white p-5"
-          style={{ borderColor: "var(--evven-border)" }}
+          className="mb-4 rounded-[var(--evven-radius-card)] p-5"
+          style={{
+            background: "var(--color-background-primary, var(--evven-background))",
+            border: "0.5px solid var(--evven-border)",
+          }}
         >
           <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Your user code
@@ -113,17 +122,21 @@ function ProfileEditor({
           </p>
           <button
             onClick={() => void copyCode()}
-            className="flex w-full items-center justify-between rounded-xl bg-secondary px-4 py-3 text-sm font-semibold"
+            className="flex w-full items-center justify-between rounded-[var(--evven-radius-card)] px-4 py-3 text-sm font-semibold"
+            style={{ background: "var(--evven-surface)" }}
           >
-            <span>{user.user_code}</span>
+            <span style={{ fontFamily: "var(--font-mono)" }}>{user.user_code}</span>
             {copied ? <Check size={16} className="text-primary" /> : <Copy size={16} />}
           </button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border bg-white p-5 sm:p-6"
-          style={{ borderColor: "var(--evven-border)" }}
+          className="rounded-[var(--evven-radius-card)] p-5 sm:p-6"
+          style={{
+            background: "var(--color-background-primary, var(--evven-background))",
+            border: "0.5px solid var(--evven-border)",
+          }}
         >
           <h2 className="mb-5 text-sm font-medium">Edit profile</h2>
           <div className="mb-4">
@@ -133,8 +146,11 @@ function ProfileEditor({
             <input
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="w-full rounded-xl border bg-secondary px-4 py-2.5 text-sm"
-              style={{ borderColor: "var(--evven-border)" }}
+              className="w-full rounded-[var(--evven-radius-card)] px-4 py-2.5 text-sm outline-none"
+              style={{
+                background: "var(--evven-surface)",
+                border: "0.5px solid var(--evven-border)",
+              }}
               required
             />
           </div>
@@ -147,13 +163,16 @@ function ProfileEditor({
               onChange={(event) => setProfilePicture(event.target.value)}
               type="url"
               placeholder="https://..."
-              className="w-full rounded-xl border bg-secondary px-4 py-2.5 text-sm"
-              style={{ borderColor: "var(--evven-border)" }}
+              className="w-full rounded-[var(--evven-radius-card)] px-4 py-2.5 text-sm outline-none"
+              style={{
+                background: "var(--evven-surface)",
+                border: "0.5px solid var(--evven-border)",
+              }}
             />
           </div>
 
           {message && <p className="mb-4 text-sm text-primary">{message}</p>}
-          {error && <p className="mb-4 text-sm text-destructive">{error}</p>}
+          {error && <p className="mb-4 text-sm" style={{ color: "var(--evven-error)" }}>{error}</p>}
 
           <button
             type="submit"

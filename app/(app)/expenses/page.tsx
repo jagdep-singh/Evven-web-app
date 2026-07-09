@@ -85,7 +85,7 @@ export default function ExpensesPage() {
         <div className="mb-7 flex items-start justify-between gap-4">
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Personal ledger
+              Expenses · {loading ? "loading" : `${expenses.length} logged`}
             </p>
             <h1 className="text-2xl font-medium">Expenses</h1>
           </div>
@@ -108,26 +108,38 @@ export default function ExpensesPage() {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search expenses"
-              className="w-full rounded-xl border bg-white py-2.5 pl-10 pr-4 text-sm"
-              style={{ borderColor: "var(--evven-border)" }}
+              className="w-full rounded-(--evven-radius-card) py-2.5 pl-10 pr-4 text-sm outline-none"
+              style={{
+                background: "var(--color-background-primary, var(--evven-background))",
+                border: "0.5px solid var(--evven-border)",
+              }}
             />
           </div>
           <div
-            className="rounded-xl border bg-white px-4 py-2.5 text-sm"
-            style={{ borderColor: "var(--evven-border)" }}
+            className="rounded-(--evven-radius-card) px-4 py-2.5 text-sm"
+            style={{
+              background: "var(--color-background-primary, var(--evven-background))",
+              border: "0.5px solid var(--evven-border)",
+            }}
           >
             <span className="text-muted-foreground">Total </span>
-            <span className="font-semibold">{formatAmount(String(total))}</span>
+            <span className="font-semibold" style={{ fontFamily: "var(--font-mono)" }}>
+              {formatAmount(String(total))}
+            </span>
           </div>
         </div>
 
-        <div className="mb-5 flex flex-wrap gap-2">
+        <div
+          className="mb-5 inline-flex max-w-full flex-wrap gap-1 rounded-full p-1"
+          style={{ background: "var(--evven-surface)" }}
+        >
           <button
             onClick={() => setCategoryFilter("all")}
             className="rounded-full px-3 py-1.5 text-xs font-medium transition-all"
             style={{
-              background: categoryFilter === "all" ? "var(--evven-text-primary)" : "var(--evven-surface)",
-              color: categoryFilter === "all" ? "white" : "var(--evven-text-muted)",
+              background: categoryFilter === "all" ? "var(--color-background-primary, var(--evven-background))" : "transparent",
+              color: categoryFilter === "all" ? "var(--evven-text-primary)" : "var(--evven-text-muted)",
+              border: categoryFilter === "all" ? "0.5px solid var(--evven-border)" : "0.5px solid transparent",
             }}
           >
             All
@@ -143,12 +155,16 @@ export default function ExpensesPage() {
                 style={{
                   background:
                     categoryFilter === cat.value
-                      ? cat.bg
-                      : "var(--evven-surface)",
+                      ? "var(--color-background-primary, var(--evven-background))"
+                      : "transparent",
                   color:
                     categoryFilter === cat.value
                       ? cat.text
                       : "var(--evven-text-muted)",
+                  border:
+                    categoryFilter === cat.value
+                      ? "0.5px solid var(--evven-border)"
+                      : "0.5px solid transparent",
                 }}
               >
                 <Icon size={14} />
@@ -159,7 +175,14 @@ export default function ExpensesPage() {
         </div>
 
         {error && (
-          <div className="mb-4 rounded-xl bg-red-50 p-4 text-sm text-destructive">
+          <div
+            className="mb-4 rounded-(--evven-radius-card) p-4 text-sm"
+            style={{
+              background: "var(--evven-surface)",
+              color: "var(--evven-error)",
+              border: "0.5px solid var(--evven-border)",
+            }}
+          >
             {error}
           </div>
         )}
@@ -170,8 +193,11 @@ export default function ExpensesPage() {
           </div>
         ) : filteredExpenses.length === 0 ? (
           <div
-            className="rounded-2xl border bg-white p-10 text-center"
-            style={{ borderColor: "var(--evven-border)" }}
+            className="rounded-(--evven-radius-card) p-10 text-center"
+            style={{
+              background: "var(--color-background-primary, var(--evven-background))",
+              border: "0.5px solid var(--evven-border)",
+            }}
           >
             <Receipt size={24} className="mx-auto mb-3 text-muted-foreground" />
             <p className="mb-1 text-sm font-medium">
@@ -201,8 +227,11 @@ export default function ExpensesPage() {
               return (
                 <div
                   key={expense.id}
-                  className="flex items-center gap-3 rounded-2xl border bg-white px-4 py-3.5"
-                  style={{ borderColor: "var(--evven-border)" }}
+                  className="flex items-center gap-3 rounded-(--evven-radius-card) px-4 py-3.5 transition-colors hover:bg-(--evven-surface)"
+                  style={{
+                    background: "var(--color-background-primary, var(--evven-background))",
+                    border: "0.5px solid var(--evven-border)",
+                  }}
                 >
                   <div
                     className="flex size-10 shrink-0 items-center justify-center rounded-xl"
@@ -218,7 +247,7 @@ export default function ExpensesPage() {
                       {categoryMeta.label} · {formatDate(expense)}
                     </p>
                   </div>
-                  <span className="shrink-0 text-sm font-semibold">
+                  <span className="shrink-0 text-sm font-semibold" style={{ fontFamily: "var(--font-mono)" }}>
                     {formatAmount(expense.amount)}
                   </span>
                   <Link
@@ -232,7 +261,8 @@ export default function ExpensesPage() {
                     onClick={() => void handleDelete(expense)}
                     disabled={deletingId === expense.id}
                     aria-label={`Delete ${expense.title}`}
-                    className="rounded-lg p-2 text-muted-foreground hover:bg-red-50 hover:text-destructive disabled:opacity-50"
+                    className="rounded-lg p-2 text-muted-foreground hover:bg-(--evven-surface) disabled:opacity-50"
+                    style={{ color: deletingId === expense.id ? "var(--evven-text-muted)" : undefined }}
                   >
                     {deletingId === expense.id ? (
                       <Loader2 size={14} className="animate-spin" />
