@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { ThemeProvider } from "@/providers/theme-provider";
-import { JetBrains_Mono , Xanh_Mono ,Homemade_Apple, Baskervville } from 'next/font/google';
+import { JetBrains_Mono , Xanh_Mono ,Homemade_Apple, Baskervville, Crimson_Text } from 'next/font/google';
 import AuthProvider from "@/components/shared/auth-provider";
 import DesktopVersionBadge from "@/components/shared/desktop-version-badge";
 
@@ -31,6 +31,14 @@ const baskervville = Baskervville({
   variable: "--font-baskervville",
 });
 
+const crimsonText = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["600"],
+  style: ["italic"],
+  display: "swap",
+  variable: "--font-crimson-text",
+});
+
 export const metadata: Metadata = {
   title: "Evven",
   description: "Keep shared costs fair, clear, and totally handled. Evven makes group expense tracking simple and automated.",
@@ -49,7 +57,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${jetBrains.className} ${xanh.className} ${homemadeApple.variable} ${baskervville.className}  h-full antialiased`}
+      className={`${jetBrains.className} ${xanh.className} ${homemadeApple.variable} ${baskervville.className} ${crimsonText.variable} h-full antialiased`}
     >
       <head>
         <link 

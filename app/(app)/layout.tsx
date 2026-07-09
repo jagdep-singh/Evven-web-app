@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,8 +13,6 @@ import {
   LogOut,
   Plus,
   ChevronRight,
-  Menu,
-  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +35,6 @@ function getInitials(name: string) {
 interface SidebarProps {
   pathname: string;
   user: ReturnType<typeof useAuthStore.getState>["user"];
-  mobile?: boolean;
   onNavigate: () => void;
   onLogout: () => void;
 }
@@ -45,12 +42,11 @@ interface SidebarProps {
 function Sidebar({
   pathname,
   user,
-  mobile = false,
   onNavigate,
   onLogout,
 }: SidebarProps) {
   return (
-    <div className={cn("flex h-full flex-col", mobile ? "p-4" : "p-4")}>
+    <div className="flex h-full flex-col p-4">
       {/* Logo */}
       <div className="mb-8 px-2 pt-2">
         <Link href="/" className="flex items-center gap-2">
@@ -78,9 +74,10 @@ function Sidebar({
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group",
                 active
-                  ? "bg-(--evven-accent-primary) text-white"
+                  ? "bg-(--evven-accent-primary)"
                   : "text-muted-foreground hover:bg-(--evven-surface) hover:text-(--evven-text-primary)"
               )}
+              style={active ? { color: "var(--evven-text-inverse)" } : undefined}
             >
               <Icon size={16} className="shrink-0" />
               {label}
@@ -95,8 +92,8 @@ function Sidebar({
         <Link
           href="/expenses/new"
           onClick={onNavigate}
-          className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-white transition-all duration-150 hover:opacity-90"
-          style={{ background: "var(--evven-accent-primary)" }}
+          className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 hover:opacity-90"
+          style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
         >
           <Plus size={15} />
           Log expense
@@ -134,6 +131,109 @@ function Sidebar({
   );
 }
 
+function BottomDock({ pathname }: { pathname: string }) {
+  const leadingItems = [
+    { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+    { href: "/groups", label: "Groups", icon: Users },
+  ];
+  const trailingItems = [
+    { href: "/expenses", label: "Expenses", icon: Receipt },
+    { href: "/profile", label: "Profile", icon: User },
+  ];
+
+  return (
+    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4 md:hidden">
+      <div
+        className="pointer-events-auto mx-auto grid h-16 max-w-sm grid-cols-5 items-center gap-1 rounded-full px-3 shadow-lg"
+        style={{
+          background: "var(--evven-background)",
+          border: "0.5px solid var(--evven-border)",
+        }}
+      >
+        {leadingItems.map(({ href, label, icon: Icon }) => {
+          const active = pathname === href || pathname.startsWith(href + "/");
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={label}
+              className="flex size-11 items-center justify-center justify-self-center rounded-full transition-all"
+              style={{
+                background: active ? "var(--evven-surface)" : "transparent",
+                color: active ? "var(--evven-accent-primary)" : "var(--evven-text-muted)",
+              }}
+            >
+              <Icon size={20} />
+            </Link>
+          );
+        })}
+        <Link
+          href="/expenses/new"
+          aria-label="Add expense"
+          className="flex size-12 items-center justify-center justify-self-center rounded-full shadow-md transition-opacity hover:opacity-90"
+          style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
+        >
+          <Plus size={24} />
+        </Link>
+        {trailingItems.map(({ href, label, icon: Icon }) => {
+          const active = pathname === href || pathname.startsWith(href + "/");
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={label}
+              className="flex size-11 items-center justify-center justify-self-center rounded-full transition-all"
+              style={{
+                background: active ? "var(--evven-surface)" : "transparent",
+                color: active ? "var(--evven-accent-primary)" : "var(--evven-text-muted)",
+              }}
+            >
+              <Icon size={20} />
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+function MobileFloatingChrome({
+  user,
+}: {
+  user: ReturnType<typeof useAuthStore.getState>["user"];
+}) {
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start px-4 pt-4 md:hidden">
+      <Link
+        href="/profile"
+        className="pointer-events-auto flex size-11 items-center justify-center overflow-hidden rounded-full text-xs font-semibold shadow-lg"
+        style={{
+          background:
+            "color-mix(in srgb, var(--evven-accent-secondary) 45%, transparent)",
+          color: "var(--evven-accent-primary)",
+          border: "1px solid var(--evven-border)",
+          backdropFilter: "blur(14px) saturate(160%)",
+          WebkitBackdropFilter: "blur(14px) saturate(160%)",
+        }}
+        aria-label="Profile"
+      >
+        {user?.profile_picture ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={user.profile_picture}
+            alt={user.name ?? "Profile"}
+            className="size-full object-cover"
+          />
+        ) : user?.name ? (
+          getInitials(user.name)
+        ) : (
+          "?"
+        )}
+      </Link>
+    </div>
+  );
+}
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -141,7 +241,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const logout = useAuthStore((s) => s.logout);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isInitialized = useAuthStore((s) => s.isInitialized);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (isInitialized && !isAuthenticated) {
@@ -175,79 +274,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           borderColor: "var(--evven-border)",
         }}
       >
-        <Sidebar
-          pathname={pathname}
-          user={user}
-          onNavigate={() => setMobileOpen(false)}
-          onLogout={handleLogout}
-        />
-      </aside>
-
-      {/* Mobile sidebar overlay */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div
-            className="absolute inset-0 bg-black/30"
-            onClick={() => setMobileOpen(false)}
+          <Sidebar
+            pathname={pathname}
+            user={user}
+            onNavigate={() => undefined}
+            onLogout={handleLogout}
           />
-          <aside
-            className="absolute left-0 top-0 bottom-0 w-64 flex flex-col"
-            style={{
-              background: "var(--evven-background)",
-              borderRight: "1px solid var(--evven-border)",
-            }}
-          >
-            <button
-              onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg"
-              style={{ background: "var(--evven-surface)" }}
-            >
-              <X size={16} />
-            </button>
-            <Sidebar
-              mobile
-              pathname={pathname}
-              user={user}
-              onNavigate={() => setMobileOpen(false)}
-              onLogout={handleLogout}
-            />
-          </aside>
-        </div>
-      )}
+      </aside>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Mobile topbar */}
-        <header
-          className="md:hidden flex items-center justify-between px-4 py-3 border-b shrink-0"
-          style={{
-            background: "var(--evven-background)",
-            borderColor: "var(--evven-border)",
-          }}
-        >
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="p-1.5 rounded-lg"
-            style={{ background: "var(--evven-surface)" }}
-          >
-            <Menu size={18} />
-          </button>
-          <Link href="/">
-            <Image src="/EvenUp-black.svg" alt="Evven" width={24} height={24} />
-          </Link>
-          <Link
-            href="/expenses/new"
-            className="p-1.5 rounded-lg text-white"
-            style={{ background: "var(--evven-accent-primary)" }}
-          >
-            <Plus size={18} />
-          </Link>
-        </header>
+        <MobileFloatingChrome user={user} />
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto pb-24 pt-16 md:pb-0 md:pt-0">
           {children}
         </main>
+        <BottomDock pathname={pathname} />
       </div>
     </div>
   );

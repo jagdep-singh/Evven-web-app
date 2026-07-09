@@ -5,14 +5,7 @@ import { useAuthStore } from "@/store/auth-store";
 import Link from "next/link";
 import api from "@/lib/api";
 import { getCategoryMeta } from "@/lib/expense-categories";
-
-const CATEGORY_COLORS: Record<string, string> = {
-    Food: "#854F0B",
-    Travel: "#185FA5",
-    Home: "#3B6D11",
-    Uncategorized: "#888780",
-    uncategorized: "#888780",
-  };
+import { Plus, Receipt, User, Users } from "lucide-react";
 
 function formatAmount(amount: string | number, currency = "₹") {
   const n = Number(amount);
@@ -40,6 +33,60 @@ const GROUP_COLORS = [
   { bg: "#FBEAF0", text: "#993556" },
   { bg: "#E6F1FB", text: "#185FA5" },
 ];
+
+function RingStat({
+  label,
+  value,
+  sub,
+  progress = 68,
+  color = "var(--evven-accent-primary)",
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  progress?: number;
+  color?: string;
+}) {
+  const radius = 18;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.max(0, Math.min(progress, 100));
+
+  return (
+    <div
+      className="flex min-w-0 items-center gap-3 rounded-[24px] p-4"
+      style={{
+        background: "var(--color-background-primary, var(--evven-background))",
+        border: "0.5px solid var(--evven-border)",
+      }}
+    >
+      <svg className="size-12 shrink-0 -rotate-90" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r={radius} fill="none" stroke="var(--evven-border)" strokeWidth="4" />
+        <circle
+          cx="22"
+          cy="22"
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference - (clamped / 100) * circumference}
+        />
+      </svg>
+      <div className="min-w-0">
+        <p className="truncate text-lg font-medium leading-none" style={{ fontFamily: "var(--font-mono)" }}>
+          {value}
+        </p>
+        <p className="mt-1 text-xs font-medium" style={{ color: "var(--evven-text-primary)" }}>
+          {label}
+        </p>
+        <p className="mt-0.5 truncate text-xs" style={{ color: "var(--evven-text-muted)" }}>
+          {sub}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 type DashboardData = {
   analytics: { total_spent: number; expense_count: number; spending_by_category: Record<string, number> } | null;
@@ -107,92 +154,119 @@ export default function DashboardPage() {
     : [];
 
   const maxCategory = categoryEntries.length > 0 ? Number(categoryEntries[0][1]) : 1;
-
-  const CATEGORY_COLORS: Record<string, string> = {
-    Food: "#854F0B",
-    Travel: "#185FA5",
-    Home: "#3B6D11",
-    Uncategorized: "#888780",
-    uncategorized: "#888780",
-  };
+  const topCategory = categoryEntries[0];
+  const topCategoryShare =
+    topCategory && analytics?.total_spent
+      ? Math.round((Number(topCategory[1]) / analytics.total_spent) * 100)
+      : 65;
+  const firstName = user?.name?.split(" ")[0] ?? "there";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
 
         {/* Header */}
-        <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-            Overview
-          </p>
-          <h1 className="text-2xl font-medium">
-            {greeting()},{" "}
-            <span
-              style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div
+              className="hidden size-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold md:flex"
+              style={{ background: "var(--evven-accent-secondary)", color: "var(--evven-accent-primary)" }}
             >
-              {user?.name?.split(" ")[0] ?? "there"}
-            </span>
-          </h1>
+              {user?.name ? getInitials(user.name) : "?"}
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
+                Overview
+              </p>
+              <h1 className="flex min-w-0 items-baseline gap-1.5 text-2xl font-medium leading-tight">
+                <span className="shrink-0">{greeting()},</span>
+                <span
+                  className="inline-block min-w-0 truncate pr-2 text-[1.08em] font-normal italic"
+                  style={{
+                    color: "var(--evven-primary)",
+                    fontFamily: "var(--font-heading), monospace",
+                  }}
+                >
+                  {firstName}
+                </span>
+              </h1>
+            </div>
+          </div>
         </div>
 
-        {/* Metric cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        {/* Hero */}
+        <div
+          className="mb-4 overflow-hidden rounded-[30px] p-5 sm:p-6"
+          style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
+        >
+          <p className="max-w-xl text-xl font-medium leading-snug sm:text-2xl">
+            You&apos;ve spent {analytics ? formatAmount(analytics.total_spent) : "—"} across {groups.length} {groups.length === 1 ? "group" : "groups"} this month.
+          </p>
+          <Link
+            href="/expenses/new"
+            className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium"
+            style={{ background: "var(--evven-background)", color: "var(--evven-text-primary)" }}
+          >
+            <Plus size={15} />
+            Log expense
+          </Link>
+        </div>
+
+        {/* Quick access */}
+        <div className="mb-4 grid grid-cols-4 gap-2 sm:gap-3">
           {[
-            {
-              label: "Total spent",
-              value: analytics ? formatAmount(analytics.total_spent) : "—",
-              sub: `${analytics?.expense_count ?? 0} personal expenses`,
-              color: undefined,
-            },
-            {
-              label: "Active groups",
-              value: loading ? "—" : String(groups.length),
-              sub: "groups you're part of",
-              color: undefined,
-            },
-            {
-              label: "Top category",
-              value:
-                categoryEntries.length > 0
-                  ? categoryEntries[0][0]
-                  : "—",
-              sub:
-                categoryEntries.length > 0
-                  ? formatAmount(categoryEntries[0][1])
-                  : "no data yet",
-              color: undefined,
-            },
-          ].map((m) => (
-            <div
-              key={m.label}
-              className="rounded-xl p-4"
-              style={{ background: "var(--color-background-secondary, #f5f3f0)" }}
+            { label: "Groups", href: "/groups", icon: Users },
+            { label: "Expenses", href: "/expenses", icon: Receipt },
+            { label: "Log", href: "/expenses/new", icon: Plus },
+            { label: "Profile", href: "/profile", icon: User },
+          ].map(({ label, href, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-[24px] px-2 text-center text-xs font-medium transition-opacity hover:opacity-80"
+              style={{
+                background: "var(--evven-surface)",
+                color: "var(--evven-text-primary)",
+                border: "0.5px solid var(--evven-border)",
+              }}
             >
-              <p
-                className="text-xs uppercase tracking-wider mb-1.5"
-                style={{ color: "var(--evven-text-muted)" }}
-              >
-                {m.label}
-              </p>
-              <p className="text-xl font-medium leading-none">{m.value}</p>
-              <p
-                className="text-xs mt-1"
-                style={{ color: "var(--evven-text-muted)" }}
-              >
-                {m.sub}
-              </p>
-            </div>
+              <Icon size={18} />
+              <span>{label}</span>
+            </Link>
           ))}
         </div>
 
+        {/* Stat cards */}
+        <div className="mb-5 grid gap-3 md:grid-cols-3">
+          <RingStat
+            label="Total spent"
+            value={analytics ? formatAmount(analytics.total_spent) : "—"}
+            sub={`${analytics?.expense_count ?? 0} personal expenses`}
+            progress={72}
+          />
+          <RingStat
+            label="Active groups"
+            value={loading ? "—" : String(groups.length)}
+            sub="groups you're part of"
+            progress={Math.min(75, Math.max(35, groups.length * 15))}
+          />
+          <RingStat
+            label="Top category"
+            value={topCategory ? topCategory[0] : "—"}
+            sub={topCategory ? formatAmount(topCategory[1]) : "no data yet"}
+            progress={topCategoryShare}
+            color={topCategory ? getCategoryMeta(topCategory[0]).text : "var(--evven-accent-primary)"}
+          />
+        </div>
+
         {/* Two column row */}
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="grid gap-3 mb-3 lg:grid-cols-2">
 
           {/* Groups panel */}
           <div
-            className="rounded-2xl p-5"
+            className="rounded-[24px] p-5"
             style={{
-              background: "var(--color-background-primary, white)",
+              background: "var(--color-background-primary, var(--evven-background))",
               border: "0.5px solid var(--evven-border)",
             }}
           >
@@ -211,7 +285,7 @@ export default function DashboardPage() {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="h-10 rounded-lg animate-pulse"
+                    className="h-10 rounded-2xl animate-pulse"
                     style={{ background: "var(--evven-surface)" }}
                   />
                 ))}
@@ -261,9 +335,9 @@ export default function DashboardPage() {
 
           {/* Category breakdown */}
           <div
-            className="rounded-2xl p-5"
+            className="rounded-[24px] p-5"
             style={{
-              background: "var(--color-background-primary, white)",
+              background: "var(--color-background-primary, var(--evven-background))",
               border: "0.5px solid var(--evven-border)",
             }}
           >
@@ -275,7 +349,7 @@ export default function DashboardPage() {
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="h-5 rounded animate-pulse"
+                    className="h-5 rounded-full animate-pulse"
                     style={{ background: "var(--evven-surface)" }}
                   />
                 ))}
@@ -327,9 +401,9 @@ export default function DashboardPage() {
 
         {/* Recent expenses */}
         <div
-          className="rounded-2xl p-5 mb-3"
+          className="rounded-[24px] p-5 mb-3"
           style={{
-            background: "var(--color-background-primary, white)",
+            background: "var(--color-background-primary, var(--evven-background))",
             border: "0.5px solid var(--evven-border)",
           }}
         >
@@ -379,7 +453,7 @@ export default function DashboardPage() {
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="h-12 rounded-lg animate-pulse"
+                      className="h-12 rounded-2xl animate-pulse"
                       style={{ background: "var(--evven-surface)" }}
                     />
                   ))}
@@ -390,7 +464,7 @@ export default function DashboardPage() {
                   style={{ color: "var(--evven-text-muted)" }}
                 >
                   No personal expenses yet.{" "}
-                  <Link href="/expenses" className="underline">
+                  <Link href="/expenses/new" className="underline">
                     Add one
                   </Link>
                 </div>
@@ -405,7 +479,7 @@ export default function DashboardPage() {
                         style={{ borderColor: "var(--evven-border)" }}
                       >
                         <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                            className="w-8 h-8 rounded-2xl flex items-center justify-center shrink-0"
                             style={{ background: catMeta.bg }}
                           >
                             {typeof catMeta.icon === "string" ? (
@@ -426,7 +500,7 @@ export default function DashboardPage() {
                         </div>
                         <span
                           className="text-sm font-medium shrink-0"
-                          style={{ color: "#A32D2D" }}
+                          style={{ color: "var(--evven-error)" }}
                         >
                           −{formatAmount(exp.amount)}
                         </span>
@@ -449,43 +523,6 @@ export default function DashboardPage() {
               </Link>
             </div>
           )}
-        </div>
-
-        {/* Quick actions */}
-        <div
-          className="rounded-2xl p-5"
-          style={{
-            background: "var(--color-background-primary, white)",
-            border: "0.5px solid var(--evven-border)",
-          }}
-        >
-          <p className="text-sm font-medium mb-3">Quick actions</p>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { label: "Log expense", href: "/expenses/new", icon: "+" },
-              { label: "New group", href: "/groups/new", icon: "⊕" },
-              { label: "Check balances", href: "/groups", icon: "⇌" },
-              { label: "View profile", href: "/profile", icon: "◉" },
-            ].map((action) => (
-              <Link
-                key={action.label}
-                href={action.href}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors hover:opacity-70"
-                style={{
-                  border: "0.5px solid var(--evven-border)",
-                  color: "var(--evven-text-primary)",
-                }}
-              >
-                <span
-                  className="text-base w-5 text-center shrink-0"
-                  style={{ color: "var(--evven-text-muted)" }}
-                >
-                  {action.icon}
-                </span>
-                {action.label}
-              </Link>
-            ))}
-          </div>
         </div>
       </div>
     </div>
