@@ -29,6 +29,7 @@ export function MembersTab({
       {members.map((member, index) => {
         const color = COLORS[index % COLORS.length];
         const isCreatorMember = member.user_id === groupCreatedBy;
+        const memberCode = member.user_code?.trim();
 
         return (
           <div
@@ -47,6 +48,17 @@ export function MembersTab({
                 {userName(member.user_id)}
                 {member.user_id === currentUserId ? " (you)" : ""}
               </p>
+              {memberCode && (
+                <p
+                  className="mt-0.5 truncate text-xs"
+                  style={{
+                    color: "var(--evven-text-muted)",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {memberCode}
+                </p>
+              )}
               <p className="text-xs mt-0.5" style={{ color: "var(--evven-text-muted)" }}>
                 {isCreatorMember ? "Admin" : "Member"} · Joined {formatDate(member.joined_at)}
               </p>

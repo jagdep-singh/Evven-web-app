@@ -9,6 +9,7 @@ export interface GroupMember {
   id: string;
   group_id: string;
   name: string;
+  user_code?: string;
   user_id: string;
   joined_at: string;
 }
