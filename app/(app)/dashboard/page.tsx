@@ -53,7 +53,7 @@ function RingStat({
 
   return (
     <div
-      className="flex min-w-0 items-center gap-3 rounded-[24px] p-4"
+      className="flex min-w-0 items-center gap-3 rounded-3xl p-4"
       style={{
         background: "var(--color-background-primary, var(--evven-background))",
         border: "0.5px solid var(--evven-border)",
@@ -166,31 +166,32 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
 
         {/* Header */}
-        <div className="mb-5 flex items-center gap-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <div
-              className="hidden size-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold md:flex"
-              style={{ background: "var(--evven-accent-secondary)", color: "var(--evven-accent-primary)" }}
+        <div className="mb-6 flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p
+              className="text-xs font-semibold uppercase tracking-widest"
+              style={{ color: "var(--evven-text-muted)" }}
             >
-              {user?.name ? getInitials(user.name) : "?"}
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
-                Overview
-              </p>
-              <h1 className="flex min-w-0 items-baseline gap-1.5 text-2xl font-medium leading-tight">
-                <span className="shrink-0">{greeting()},</span>
-                <span
-                  className="inline-block min-w-0 truncate pr-2 text-[1.08em] font-normal italic"
-                  style={{
-                    color: "var(--evven-primary)",
-                    fontFamily: "var(--font-heading), monospace",
-                  }}
-                >
-                  {firstName}
-                </span>
-              </h1>
-            </div>
+              Overview
+            </p>
+            <h1 className="mt-2 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5 text-2xl font-medium leading-tight sm:text-[2rem]">
+              <span className="shrink-0">{greeting()},</span>
+              <span
+                className="inline-block max-w-full truncate pr-2 text-[1.08em] font-normal italic"
+                style={{
+                  color: "var(--evven-primary)",
+                  fontFamily: "var(--font-heading), monospace",
+                }}
+              >
+                {firstName}
+              </span>
+            </h1>
+            <p
+              className="mt-2 max-w-xl text-sm leading-6 sm:text-[15px]"
+              style={{ color: "var(--evven-text-muted)" }}
+            >
+              Your shared spending, groups, and recent activity all in one place.
+            </p>
           </div>
         </div>
 
@@ -223,7 +224,7 @@ export default function DashboardPage() {
             <Link
               key={href}
               href={href}
-              className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-[24px] px-2 text-center text-xs font-medium transition-opacity hover:opacity-80"
+              className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-3xl px-2 text-center text-xs font-medium transition-opacity hover:opacity-80"
               style={{
                 background: "var(--evven-surface)",
                 color: "var(--evven-text-primary)",
@@ -264,7 +265,7 @@ export default function DashboardPage() {
 
           {/* Groups panel */}
           <div
-            className="rounded-[24px] p-5"
+            className="rounded-3xl p-5"
             style={{
               background: "var(--color-background-primary, var(--evven-background))",
               border: "0.5px solid var(--evven-border)",
@@ -335,7 +336,7 @@ export default function DashboardPage() {
 
           {/* Category breakdown */}
           <div
-            className="rounded-[24px] p-5"
+            className="rounded-3xl p-5"
             style={{
               background: "var(--color-background-primary, var(--evven-background))",
               border: "0.5px solid var(--evven-border)",
@@ -401,7 +402,7 @@ export default function DashboardPage() {
 
         {/* Recent expenses */}
         <div
-          className="rounded-[24px] p-5 mb-3"
+          className="rounded-3xl p-5 mb-3"
           style={{
             background: "var(--color-background-primary, var(--evven-background))",
             border: "0.5px solid var(--evven-border)",
