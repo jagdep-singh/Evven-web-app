@@ -1,15 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Loader2, Search, Trash2, UserRound } from "lucide-react";
+import { Loader2, Search, UserRound } from "lucide-react";
 import { FriendCreateDialog } from "./FriendCreateDialog";
-import { getGhostBalanceLabel, getInitials } from "./friend-utils";
+import { FriendCard } from "./FriendCard";
 import { useFriendsDirectory } from "./use-friends-directory";
 
 export function FriendsSection() {
   const { friends, loading, error, setError, createFriend, removeFriend } = useFriendsDirectory();
   const [search, setSearch] = useState("");
-  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const filteredFriends = useMemo(() => {
     const normalized = search.trim().toLowerCase();
@@ -19,15 +18,12 @@ export function FriendsSection() {
   }, [friends, search]);
 
   const handleDelete = async (friendId: string) => {
-    setDeletingId(friendId);
     setError("");
 
     try {
       await removeFriend(friendId);
     } catch {
       setError("Could not delete this friend until the balance is settled.");
-    } finally {
-      setDeletingId(null);
     }
   };
 
@@ -44,7 +40,7 @@ export function FriendsSection() {
           <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Friends
           </p>
-          <h2 className="text-sm font-medium">Ghost users</h2>
+          <h2 className="text-sm font-medium">Manage your friends</h2>
         </div>
         <div
           className="flex size-10 shrink-0 items-center justify-center rounded-xl"
@@ -105,42 +101,12 @@ export function FriendsSection() {
       ) : (
         <div className="space-y-2">
           {filteredFriends.map((friend) => (
-            <div
+            <FriendCard
               key={friend.id}
-              className="flex items-center gap-3 rounded-[var(--evven-radius-card)] px-3 py-3"
-              style={{
-                background: "var(--evven-surface)",
-                border: "0.5px solid var(--evven-border)",
-              }}
-            >
-              <div
-                className="flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold"
-                style={{
-                  background: "var(--color-background-primary, var(--evven-background))",
-                }}
-              >
-                {getInitials(friend.name)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{friend.name}</p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {getGhostBalanceLabel(friend)}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => void handleDelete(friend.id)}
-                disabled={deletingId === friend.id}
-                aria-label={`Delete ${friend.name}`}
-                className="rounded-lg p-2 text-muted-foreground hover:bg-background disabled:opacity-50"
-              >
-                {deletingId === friend.id ? (
-                  <Loader2 size={14} className="animate-spin" />
-                ) : (
-                  <Trash2 size={14} />
-                )}
-              </button>
-            </div>
+              friend={friend}
+              compact
+              onDelete={() => void handleDelete(friend.id)}
+            />
           ))}
         </div>
       )}

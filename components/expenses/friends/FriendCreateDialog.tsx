@@ -25,7 +25,7 @@ interface FriendCreateDialogProps {
 }
 
 function formatFriendName(value: string) {
-  const trimmed = value.trimStart();
+  const trimmed = value.trim().replace(/\s+/g, " ");
   if (!trimmed) return "";
 
   return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);

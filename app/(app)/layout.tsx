@@ -7,10 +7,10 @@ import { useAuthStore } from "@/store/auth-store";
 import {
   LayoutDashboard,
   Users,
+  UserRound,
   Receipt,
   User,
   LogOut,
-  Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +24,7 @@ type DockItem = {
 const DOCK_ITEMS: DockItem[] = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/groups", label: "Groups", icon: Users },
-  { href: "/expenses/new", label: "Add expense", icon: Plus, center: true },
+  { href: "/friends", label: "Friends", icon: UserRound },
   { href: "/expenses", label: "Expenses", icon: Receipt },
   { href: "/profile", label: "Profile", icon: User },
 ] as const;
@@ -59,7 +59,7 @@ function Dock({ pathname, variant }: { pathname: string; variant: "mobile" | "de
           "pointer-events-auto grid items-center rounded-(--evven-radius-hero) border shadow-2xl shadow-black/10",
           isDesktop
             ? "grid-flow-col auto-cols-max gap-1.5 px-3 py-2.5"
-            : "mx-auto h-16 max-w-sm grid-cols-5 gap-1 px-3 py-0"
+            : "mx-auto h-16 max-w-md grid-cols-5 gap-1 px-3 py-0"
         )}
         style={{
           background:

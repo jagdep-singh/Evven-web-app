@@ -1,13 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { ExpenseForm } from "@/components/expenses/ExpenseForm";
+import { ExpenseForm, type ExpenseFormValues } from "@/components/expenses/ExpenseForm";
 import { createPersonalExpense } from "@/services/expenses";
 
 export default function NewExpensePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const ghostId = searchParams.get("ghost_id") ?? "";
+  const direction = searchParams.get("direction");
+
+  const initialValues: ExpenseFormValues = {
+    title: "",
+    amount: "",
+    category: "",
+    date: new Date().toISOString().slice(0, 10),
+    notes: "",
+    ghost_id: ghostId,
+    settlement_direction:
+      direction === "you_owe" || direction === "they_owe" ? direction : "they_owe",
+    settlement_amount: "",
+  };
 
   return (
     <div className="min-h-full bg-background">
@@ -30,6 +45,7 @@ export default function NewExpensePage() {
           style={{ borderColor: "var(--evven-border)" }}
         >
           <ExpenseForm
+            initialValues={initialValues}
             submitLabel="Add expense"
             onSubmit={async (expense) => {
               await createPersonalExpense(expense);

@@ -148,7 +148,7 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
             </div>
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Amount
+                Expense amount
               </label>
               <div
                 className="flex w-full items-center rounded-xl border px-4 py-2.5 text-sm"
@@ -161,6 +161,9 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
                   ₹{Number(amount || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
                 </span>
               </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                This mirrors the main expense amount above.
+              </p>
             </div>
           </div>
         )}

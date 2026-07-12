@@ -5,6 +5,12 @@ export function formatMoney(value: string | number | null | undefined) {
   return `₹${Math.abs(amount).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 }
 
+export function formatSignedMoney(value: string | number | null | undefined) {
+  const amount = Number(value ?? 0);
+  const prefix = amount > 0 ? "+" : amount < 0 ? "-" : "";
+  return `${prefix}${formatMoney(amount)}`;
+}
+
 export function getInitials(name: string) {
   return name
     .split(" ")
@@ -26,6 +32,35 @@ export function getGhostBalanceLabel(friend: Ghost) {
     : `You owe ${friend.name} ${formatMoney(balance)}`;
 }
 
+export function getGhostBalanceState(friend: Ghost) {
+  const balance = Number(friend.net_balance ?? 0);
+
+  if (!Number.isFinite(balance) || balance === 0) {
+    return {
+      tone: "neutral" as const,
+      title: "Settled up",
+      helper: "No outstanding balance",
+      amount: 0,
+    };
+  }
+
+  if (balance > 0) {
+    return {
+      tone: "positive" as const,
+      title: `${friend.name} owes you ${formatMoney(balance)}`,
+      helper: "Money coming back to you",
+      amount: balance,
+    };
+  }
+
+  return {
+    tone: "negative" as const,
+    title: `You owe ${friend.name} ${formatMoney(balance)}`,
+    helper: "Money you need to settle",
+    amount: balance,
+  };
+}
+
 export function getGhostExpenseSummary(expense: PersonalExpense) {
   const friendName = expense.ghost?.name ?? null;
   if (!friendName && !expense.ghost_id) return null;
@@ -42,6 +77,26 @@ export function getGhostExpenseSummary(expense: PersonalExpense) {
   }
 
   return `With ${displayName}`;
+}
+
+export function getGhostHistoryStatus(expense: PersonalExpense) {
+  if (expense.settlement_amount) {
+    return "Settled";
+  }
+
+  return "Pending";
+}
+
+export function getGhostHistoryDirection(expense: PersonalExpense) {
+  if (expense.settlement_direction === "you_owe") {
+    return "You owe";
+  }
+
+  if (expense.settlement_direction === "they_owe") {
+    return "They owe";
+  }
+
+  return "Expense";
 }
 
 export function getDefaultSettlementDirection(balance: string | number | null | undefined): SettlementDirection {

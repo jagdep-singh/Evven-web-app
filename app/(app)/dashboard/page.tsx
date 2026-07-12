@@ -166,7 +166,7 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
 
         {/* Header */}
-        <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <p
               className="text-xs font-semibold uppercase tracking-widest"
@@ -174,13 +174,19 @@ export default function DashboardPage() {
             >
               Overview
             </p>
-            <h1 className="mt-2 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5 text-2xl font-medium leading-tight sm:text-[2rem]">
+            <h1 className="mt-2 flex min-w-0 flex-wrap items-end gap-x-2 gap-y-1 text-2xl font-medium leading-snug sm:text-[2rem]">
               <span className="shrink-0">{greeting()},</span>
               <span
-                className="inline-block max-w-full truncate pr-2 text-[1.08em] font-normal italic"
+                className="inline-block max-w-full pr-2"
                 style={{
                   color: "var(--evven-primary)",
-                  fontFamily: "var(--font-heading), monospace",
+                  fontFamily: "var(--font-instrument-serif)",
+                  fontStyle: "italic",
+                  fontSize: "inherit",
+                  fontWeight: 500,
+                  letterSpacing: "0.05em",
+                  lineHeight: 1.05,
+                  marginBottom: "0",
                 }}
               >
                 {firstName}
@@ -193,6 +199,14 @@ export default function DashboardPage() {
               Your shared spending, groups, and recent activity all in one place.
             </p>
           </div>
+
+          <Link
+            href="/expenses/new"
+            className="inline-flex items-center justify-center shrink-0 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
+          >
+            <Plus size={15} />
+            Add expense
+          </Link>
         </div>
 
         {/* Hero */}
@@ -203,14 +217,6 @@ export default function DashboardPage() {
           <p className="max-w-xl text-xl font-medium leading-snug sm:text-2xl">
             You&apos;ve spent {analytics ? formatAmount(analytics.total_spent) : "—"} across {groups.length} {groups.length === 1 ? "group" : "groups"} this month.
           </p>
-          <Link
-            href="/expenses/new"
-            className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium"
-            style={{ background: "var(--evven-background)", color: "var(--evven-text-primary)" }}
-          >
-            <Plus size={15} />
-            Log expense
-          </Link>
         </div>
 
         {/* Quick access */}
@@ -218,7 +224,6 @@ export default function DashboardPage() {
           {[
             { label: "Groups", href: "/groups", icon: Users },
             { label: "Expenses", href: "/expenses", icon: Receipt },
-            { label: "Log", href: "/expenses/new", icon: Plus },
             { label: "Profile", href: "/profile", icon: User },
           ].map(({ label, href, icon: Icon }) => (
             <Link
