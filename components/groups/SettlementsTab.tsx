@@ -38,14 +38,14 @@ export function SettlementsTab({
 
   const displayName = (userId: string) => (userId === currentUserId ? "You" : userName(userId));
   const formatGiveLine = (giverId: string, receiverId: string) => {
-    if (giverId === currentUserId) return `you will give ${userName(receiverId)}`;
-    if (receiverId === currentUserId) return `${userName(giverId)} will give you`;
-    return `${userName(giverId)} will give ${userName(receiverId)}`;
+    if (giverId === currentUserId) return `you paid ${userName(receiverId)}`;
+    if (receiverId === currentUserId) return `${userName(giverId)} paid you`;
+    return `${userName(giverId)} paid ${userName(receiverId)}`;
   };
   const formatGaveLine = (giverId: string, receiverId: string) => {
-    if (giverId === currentUserId) return `you gave ${userName(receiverId)}`;
-    if (receiverId === currentUserId) return `${userName(giverId)} gave you`;
-    return `${userName(giverId)} gave ${userName(receiverId)}`;
+    if (giverId === currentUserId) return `you paid ${userName(receiverId)}`;
+    if (receiverId === currentUserId) return `${userName(giverId)} paid you`;
+    return `${userName(giverId)} paid ${userName(receiverId)}`;
   };
   const nettedBalanceEntries = Object.entries(balances)
     .map(([userId, amount]) => [userId, Number(amount)] as const)
@@ -122,15 +122,15 @@ export function SettlementsTab({
     icon: typeof Banknote;
   }> = [
     { key: "past", label: "Settled", icon: CheckCircle },
-    { key: "final", label: "Final settlements", icon: ArrowLeftRight },
-    { key: "receivables", label: "Will receive", icon: Split },
+    { key: "final", label: "To settle", icon: ArrowLeftRight },
+    { key: "receivables", label: "To collect", icon: Split },
     { key: "breakdown", label: "Expense breakdown", icon: Receipt },
   ];
 
   return (
     <div className="h-full overflow-hidden flex flex-col">
       <div className="shrink-0 mb-4">
-        <div className="grid grid-cols-2 gap-2 rounded-2xl p-1 border" style={{ background: "white", borderColor: "var(--evven-border)" }}>
+        <div className="card grid grid-cols-2 gap-2 rounded-2xl p-1">
           {subTabs.map(({ key, label, icon: Icon }) => {
             const active = subTab === key;
             return (
@@ -161,8 +161,7 @@ export function SettlementsTab({
                 {settlements.map((settlement) => (
                   <div
                     key={settlement.id}
-                    className="flex items-center gap-3 px-4 py-3 rounded-2xl border"
-                    style={{ background: "white", borderColor: "var(--evven-border)" }}
+                    className="card flex items-center gap-3 rounded-2xl px-4 py-3"
                   >
                     <CheckCircle size={15} style={{ color: "#0F6E56" }} className="shrink-0" />
                     <p className="text-sm flex-1 font-medium" style={{ color: "var(--evven-text-primary)" }}>
@@ -187,8 +186,7 @@ export function SettlementsTab({
                 {finalSettlements.map(({ sourceId, entries, total }) => (
                   <div
                     key={sourceId}
-                    className="rounded-2xl border p-4"
-                    style={{ background: "white", borderColor: "var(--evven-border)" }}
+                    className="card rounded-2xl p-4"
                   >
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
@@ -196,7 +194,7 @@ export function SettlementsTab({
                           {displayName(sourceId)}
                         </p>
                         <p className="text-xs mt-0.5" style={{ color: "var(--evven-text-muted)" }}>
-                          Will give to {entries.length} member{entries.length !== 1 ? "s" : ""}
+                          Needs to settle with {entries.length} member{entries.length !== 1 ? "s" : ""}
                         </p>
                       </div>
                       <span
@@ -227,7 +225,7 @@ export function SettlementsTab({
                 ))}
               </div>
             ) : (
-              <EmptyState title="No final settlements" description="Unsettled balances will show up here." />
+              <EmptyState title="No payments to settle" description="Unsettled payments will show up here." />
             )}
           </div>
         )}
@@ -239,8 +237,7 @@ export function SettlementsTab({
                 {receivableView.map(({ sourceId, entries, total }) => (
                   <div
                     key={sourceId}
-                    className="rounded-2xl border p-4"
-                    style={{ background: "white", borderColor: "var(--evven-border)" }}
+                    className="card rounded-2xl p-4"
                   >
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
@@ -248,7 +245,7 @@ export function SettlementsTab({
                           {displayName(sourceId)}
                         </p>
                         <p className="text-xs mt-0.5" style={{ color: "var(--evven-text-muted)" }}>
-                          Will receive from {entries.length} member{entries.length !== 1 ? "s" : ""}
+                          To collect from {entries.length} member{entries.length !== 1 ? "s" : ""}
                         </p>
                       </div>
                       <span
@@ -279,7 +276,7 @@ export function SettlementsTab({
                 ))}
               </div>
             ) : (
-              <EmptyState title="Nothing to receive" description="Members who will give you money will show up here." />
+              <EmptyState title="Nothing to collect" description="Members you can collect from will show up here." />
             )}
           </div>
         )}
@@ -290,23 +287,23 @@ export function SettlementsTab({
               <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
                 Expense breakdown
               </p>
-              <button
-                type="button"
-                onClick={onReloadBreakdown}
-                className="text-xs font-medium px-3 py-1.5 rounded-lg border transition-all hover:opacity-80"
-                style={{
-                  borderColor: "var(--evven-border)",
-                  background: "white",
-                  color: "var(--evven-text-primary)",
-                }}
-              >
+                <button
+                  type="button"
+                  onClick={onReloadBreakdown}
+                  className="text-xs font-medium px-3 py-1.5 rounded-lg border transition-all hover:opacity-80"
+                  style={{
+                    borderColor: "var(--evven-border)",
+                    background: "var(--evven-card-background)",
+                    color: "var(--evven-text-primary)",
+                  }}
+                >
                 Reload
               </button>
             </div>
 
             {breakdownError ? (
               <div
-                className="rounded-2xl border px-4 py-3 text-sm"
+                className="card rounded-2xl px-4 py-3 text-sm"
                 style={{
                   background: "#FEF2F2",
                   borderColor: "#FECACA",
@@ -318,7 +315,7 @@ export function SettlementsTab({
             ) : detailedBreakdown.length === 0 ? (
               <EmptyState
                 title="No breakdown to show"
-                description="Add a few expenses and their splits to see who will give whom."
+                description="Add a few expenses and their splits to see who paid whom."
                 icon={<Receipt size={18} style={{ color: "var(--evven-text-muted)" }} />}
               />
             ) : (
@@ -326,8 +323,7 @@ export function SettlementsTab({
                 {detailedBreakdown.map(({ debtorId, creditors }) => (
                   <div
                     key={debtorId}
-                    className="rounded-2xl border p-4"
-                    style={{ background: "white", borderColor: "var(--evven-border)" }}
+                    className="card rounded-2xl p-4"
                   >
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div>
@@ -335,7 +331,7 @@ export function SettlementsTab({
                           {displayName(debtorId)}
                         </p>
                         <p className="text-xs mt-0.5" style={{ color: "var(--evven-text-muted)" }}>
-                          Will give to {creditors.length} member{creditors.length !== 1 ? "s" : ""}
+                          Pays {creditors.length} member{creditors.length !== 1 ? "s" : ""}
                         </p>
                       </div>
                       <span
@@ -350,15 +346,14 @@ export function SettlementsTab({
                       {creditors.map(({ creditorId, items, total }) => (
                         <div
                           key={creditorId}
-                          className="rounded-xl p-3"
-                          style={{ background: "var(--evven-surface)" }}
+                          className="card rounded-xl p-3"
                         >
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <p
                               className="text-xs font-semibold uppercase tracking-widest"
                               style={{ color: "var(--evven-text-muted)" }}
                             >
-                              Will give {displayName(creditorId)}
+                              Paid to {displayName(creditorId)}
                             </p>
                             <p className="text-xs font-medium" style={{ color: "var(--evven-text-primary)" }}>
                               {formatAmount(total)}
@@ -368,7 +363,7 @@ export function SettlementsTab({
                             {items.map((item) => (
                               <div
                                 key={item.expense_id}
-                                className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2"
+                                className="card flex items-center justify-between gap-3 rounded-lg px-3 py-2"
                               >
                                 <div className="min-w-0">
                                   <p className="text-sm font-medium truncate" style={{ color: "var(--evven-text-primary)" }}>
@@ -409,8 +404,7 @@ function EmptyState({
 }) {
   return (
     <div
-      className="rounded-2xl border px-4 py-6 text-center"
-      style={{ background: "white", borderColor: "var(--evven-border)" }}
+      className="card rounded-2xl px-4 py-6 text-center"
     >
       <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--evven-surface)]">
         {icon ?? <CheckCircle size={16} style={{ color: "var(--evven-text-muted)" }} />}

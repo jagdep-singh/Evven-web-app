@@ -15,7 +15,7 @@ const testimonials = [
   },
   {
     quote:
-      "We used to spend an hour every month reconciling who owed what. Now it takes two minutes.",
+      "We used to spend an hour every month reconciling who paid what. Now it takes two minutes.",
     name: "Priya S.",
     role: "Apartment co-lease, 4 roommates",
   },
@@ -39,7 +39,7 @@ export function Testimonials() {
               className="space-y-6 pb-12 border-b border-[var(--evven-border)]"
             >
               <p className="text-lg sm:text-xl leading-relaxed text-[var(--evven-text-primary)]">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
               <footer className="space-y-1">
                 <strong className="block text-base font-semibold text-[var(--evven-text-primary)]">

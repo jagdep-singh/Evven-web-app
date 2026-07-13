@@ -39,11 +39,11 @@ export default function Login() {
   }
 
   return (
-        <div className="w-full max-w-[420px] lg:max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="relative isolate w-full max-w-[420px] px-4 sm:px-0 lg:max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
 
-          <div className="absolute -inset-4 lg:-inset-6 from-primary/10 via-primary/5 to-transparent rounded-4xl blur-2xl -z-10 opacity-60" />
+          <div className="absolute -inset-4 -z-10 rounded-4xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent blur-2xl opacity-60 lg:-inset-6" />
 
-          <div className="rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl p-8 shadow-xl ring-1 ring-white/10">
+          <div className="card rounded-[2rem] bg-card/70 p-6 shadow-xl ring-1 ring-white/10 backdrop-blur-xl sm:p-8">
 
           <div className="text-center mb-8">
               {isSessionExpired && (
@@ -51,8 +51,8 @@ export default function Login() {
                   Your desktop session expired or the token was unavailable. Sign in again to keep Evven open.
                 </div>
               )}
-              <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back!</h1>
-              <p className="text-muted-foreground text-sm">
+              <h1 className="text-2xl font-bold tracking-tight mb-2 sm:text-3xl">Welcome back!</h1>
+              <p className="text-sm text-muted-foreground">
                 {isSessionExpired
                   ? "We saved your place. Just sign in again to continue."
                   : "Enter your credentials to continue"}
@@ -127,7 +127,7 @@ export default function Login() {
                 <div className="w-full border-t border-border/40" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card/60 px-2 text-muted-foreground">Or continue with</span>
+                <span className="card bg-card/60 px-4 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 

@@ -37,17 +37,16 @@ export default function Register() {
   }
 
   return (
-    
-      <div className="w-full flex items-center justify-center p-4 lg:p-8 bg-background relative">
-        <div className="w-full max-w-[420px] lg:max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="relative flex w-full items-center justify-center bg-background p-4 lg:p-8">
+        <div className="relative isolate w-full max-w-[420px] px-4 sm:px-0 lg:max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
 
-          <div className="absolute -inset-4 lg:-inset-6 from-primary/10 via-primary/5 to-transparent rounded-4xl blur-2xl -z-10 opacity-60" />
+          <div className="absolute -inset-4 -z-10 rounded-4xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent blur-2xl opacity-60 lg:-inset-6" />
 
-          <div className="rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl p-8 shadow-xl ring-1 ring-white/10">
+          <div className="card rounded-[2rem] bg-card/70 p-6 shadow-xl ring-1 ring-white/10 backdrop-blur-xl sm:p-8">
 
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold tracking-tight mb-2">Create an account</h1>
-              <p className="text-muted-foreground text-sm">Join us and get started today</p>
+            <div className="mb-8 text-center">
+              <h1 className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl">Create an account</h1>
+              <p className="text-sm text-muted-foreground">Join us and get started today</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -127,7 +126,7 @@ export default function Register() {
                 <div className="w-full border-t border-border/40" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card/60 px-5 text-muted-foreground">Or continue with</span>
+                <span className="card bg-card/60 px-4 text-muted-foreground sm:px-5">Or continue with</span>
               </div>
             </div>
 

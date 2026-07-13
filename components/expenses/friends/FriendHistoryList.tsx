@@ -27,7 +27,7 @@ export function FriendHistoryList({
 }: FriendHistoryListProps) {
   if (loading) {
     return (
-      <div className="flex h-32 items-center justify-center rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] sm:h-40">
+      <div className="card flex h-32 items-center justify-center sm:h-40">
         <Loader2 size={18} className="animate-spin text-primary" />
       </div>
     );
@@ -35,10 +35,7 @@ export function FriendHistoryList({
 
   if (error) {
     return (
-      <div
-        className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-5 text-sm"
-        style={{ color: "var(--evven-error)" }}
-      >
+      <div className="card rounded-[var(--evven-radius-card)] p-5 text-sm" style={{ color: "var(--evven-error)" }}>
         {error}
       </div>
     );
@@ -46,9 +43,7 @@ export function FriendHistoryList({
 
   if (expenses.length === 0) {
     return (
-      <div
-        className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-5 text-sm text-muted-foreground sm:p-6"
-      >
+      <div className="card rounded-[var(--evven-radius-card)] p-5 text-sm text-muted-foreground sm:p-6">
         <Clock3 size={16} className="mb-2" />
         {emptyLabel}
       </div>
@@ -65,15 +60,15 @@ export function FriendHistoryList({
         return (
           <div
             key={expense.id}
-            className="flex items-start gap-3 rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-4"
+            className="card flex items-start gap-3 p-4 rounded-[var(--evven-radius-card)]"
           >
             <div
               className="mt-1 h-8 w-1 rounded-full"
               style={{
                 background:
-                  direction === "You owe"
+                  expense.settlement_direction === "you_owe"
                     ? "var(--evven-error)"
-                    : direction === "They owe"
+                    : expense.settlement_direction === "they_owe"
                       ? "var(--evven-accent-primary)"
                       : "var(--evven-border)",
               }}

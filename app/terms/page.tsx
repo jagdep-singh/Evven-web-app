@@ -136,7 +136,7 @@ export default function TermsPage() {
               <p>
                 Evven is a shared expense tracking tool. It helps groups of
                 people — roommates, travel companions, teams, and organizations
-                — log costs, calculate fair splits, and track who owes what.
+                — log costs, calculate fair splits, and track who paid what.
               </p>
               <p className="text-sm">
                 Evven does not process payments, hold funds, or act as a
@@ -151,7 +151,7 @@ export default function TermsPage() {
                 You are responsible for keeping your login credentials secure
                 and for all activity that occurs under your account.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border/30 bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Accuracy">
                   Provide accurate information when you sign up and keep it
                   up to date.
@@ -191,7 +191,7 @@ export default function TermsPage() {
                   </li>
                 ))}
               </ul>
-              <p className="rounded-lg border border-border/30 bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 We reserve the right to suspend or terminate accounts that
                 violate these rules without prior notice.
               </p>
@@ -203,7 +203,7 @@ export default function TermsPage() {
                 group. When you add an expense, it becomes visible to all
                 members of that group — this is core to how Evven works.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border/30 bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Your data">
                   You retain ownership of the data you enter. We do not sell
                   it or share it outside your group.
@@ -285,7 +285,7 @@ export default function TermsPage() {
                 any indirect, incidental, special, consequential, or punitive
                 damages arising from your use of the service.
               </p>
-              <p className="rounded-lg border border-border/30 bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 Our total liability to you for any claim arising out of or
                 relating to these terms or the service shall not exceed the
                 greater of{" "}

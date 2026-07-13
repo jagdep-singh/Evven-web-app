@@ -28,16 +28,15 @@ export function FriendCard({
   return (
     <div
       className={[
-        "group block w-full rounded-[var(--evven-radius-card)] text-left transition-colors",
+        "card group block w-full rounded-[var(--evven-radius-card)] text-left transition-colors",
         selected ? "ring-1 ring-[var(--evven-accent-primary)]" : "",
       ]
         .filter(Boolean)
         .join(" ")}
       style={{
         background: selected
-          ? "color-mix(in srgb, var(--evven-accent-secondary) 24%, var(--evven-background))"
-          : "var(--color-background-primary, var(--evven-background))",
-        border: "0.5px solid var(--evven-border)",
+          ? "color-mix(in srgb, var(--evven-accent-secondary) 24%, var(--evven-card-background))"
+          : "var(--evven-card-background)",
       }}
     >
       {href ? (

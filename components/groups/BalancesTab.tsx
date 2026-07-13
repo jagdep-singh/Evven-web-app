@@ -47,10 +47,7 @@ export function BalancesTab({
   return (
     <div className="h-full overflow-y-auto pr-1">
       {balanceEntries.length === 0 ? (
-        <div
-          className="rounded-2xl p-8 text-center border"
-          style={{ background: "white", borderColor: "var(--evven-border)" }}
-        >
+        <div className="card rounded-2xl p-8 text-center">
           <Scale size={20} className="mx-auto mb-3" style={{ color: "var(--evven-text-muted)" }} />
           <p className="text-sm font-medium mb-1" style={{ color: "var(--evven-text-primary)" }}>
             All settled up
@@ -70,8 +67,7 @@ export function BalancesTab({
             return (
               <div
                 key={uid}
-                className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border"
-                style={{ background: "white", borderColor: "var(--evven-border)" }}
+                className="card flex items-center gap-3 px-4 py-3.5 rounded-2xl"
               >
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
@@ -91,8 +87,8 @@ export function BalancesTab({
                     }}
                   >
                     {youOwe
-                      ? `you owe ${formatAmount(displayAmount)}`
-                      : `owes you ${formatAmount(displayAmount)}`}
+                      ? `you paid ${formatAmount(displayAmount)} more`
+                      : `${userName(uid)} paid ${formatAmount(displayAmount)} more`}
                   </p>
                 </div>
                 {!isMe && youOwe ? (

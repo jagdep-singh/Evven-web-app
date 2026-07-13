@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
@@ -34,10 +34,28 @@ export function GoogleSignInButton() {
   const router = useRouter();
   const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState("");
+  const [buttonWidth, setButtonWidth] = useState(336);
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  const initializeGoogle = () => {
+  useEffect(() => {
+    const updateWidth = () => {
+      const nextWidth = wrapperRef.current?.clientWidth ?? 336;
+      setButtonWidth(Math.max(240, Math.min(400, Math.floor(nextWidth))));
+    };
+
+    updateWidth();
+
+    if (!wrapperRef.current || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => updateWidth());
+    observer.observe(wrapperRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const initializeGoogle = useCallback(() => {
     if (!clientId || !window.google || !buttonRef.current) return;
 
     window.google.accounts.id.initialize({
@@ -58,10 +76,15 @@ export function GoogleSignInButton() {
       theme: "outline",
       size: "large",
       shape: "pill",
-      width: 336,
+      width: buttonWidth,
       text: "continue_with",
     });
-  };
+  }, [buttonWidth, clientId, loginWithGoogle, router]);
+
+  useEffect(() => {
+    if (!clientId || !window.google || !buttonRef.current) return;
+    initializeGoogle();
+  }, [initializeGoogle, clientId]);
 
   if (!clientId) {
     return (
@@ -73,7 +96,7 @@ export function GoogleSignInButton() {
   }
 
   return (
-    <div>
+    <div ref={wrapperRef} className="w-full">
       <Script
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"

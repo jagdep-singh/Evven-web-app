@@ -99,27 +99,14 @@ export default function GroupsPage() {
 
         {/* Error */}
         {error && !loading && (
-          <div
-            className="rounded-[var(--evven-radius-card)] p-4 text-sm"
-            style={{
-              background: "var(--evven-surface)",
-              color: "var(--evven-error)",
-              border: "0.5px solid var(--evven-border)",
-            }}
-          >
+          <div className="card rounded-[var(--evven-radius-card)] p-4 text-sm" style={{ color: "var(--evven-error)" }}>
             {error}
           </div>
         )}
 
         {/* Empty state */}
         {!loading && !error && groups.length === 0 && (
-          <div
-            className="rounded-[var(--evven-radius-card)] p-10 text-center"
-            style={{
-              border: "0.5px solid var(--evven-border)",
-              background: "var(--color-background-primary, var(--evven-background))",
-            }}
-          >
+          <div className="card rounded-[var(--evven-radius-card)] p-10 text-center">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
               style={{ background: "var(--evven-accent-secondary)" }}
@@ -152,11 +139,7 @@ export default function GroupsPage() {
                 <Link
                   key={g.id}
                   href={`/groups/${g.id}`}
-                  className="flex items-center gap-4 px-4 py-3.5 rounded-[var(--evven-radius-card)] transition-all hover:bg-(--evven-surface) group"
-                  style={{
-                    background: "var(--color-background-primary, var(--evven-background))",
-                    border: "0.5px solid var(--evven-border)",
-                  }}
+                  className="card flex items-center gap-4 rounded-[var(--evven-radius-card)] px-4 py-3.5 transition-all hover:bg-(--evven-surface) group"
                 >
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
@@ -189,11 +172,7 @@ export default function GroupsPage() {
             onClick={() => setShowCreate(false)}
           />
           <div
-            className="relative w-full max-w-sm rounded-[var(--evven-radius-hero)] p-6 shadow-xl"
-            style={{
-              background: "var(--color-background-primary, var(--evven-background))",
-              border: "0.5px solid var(--evven-border)",
-            }}
+            className="card relative w-full max-w-sm rounded-[var(--evven-radius-hero)] p-6 shadow-xl"
           >
             <button
               onClick={() => setShowCreate(false)}

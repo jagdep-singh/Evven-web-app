@@ -46,7 +46,7 @@ function GuideCard({
   time: string;
 }) {
   return (
-    <div className="space-y-3 rounded-lg border border-border bg-white/[0.02] p-5 transition-colors hover:bg-white/[0.04]">
+    <div className="card space-y-3 rounded-lg p-5 transition-colors hover:bg-white/[0.04]">
       <div className="flex items-center justify-between gap-3">
         <h3 className="text-base font-semibold text-foreground">{title}</h3>
         <span className="shrink-0 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/50">
@@ -183,7 +183,7 @@ export default function GuidesPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <GuideCard
                   title="Understanding your balance"
-                  description="What 'you owe' and 'you're owed' actually mean, and how Evven nets out multi-person debts."
+                  description="What 'you paid' and 'they paid' mean, and how Evven nets out multi-person balances."
                   time="3 min"
                 />
                 <GuideCard
@@ -192,8 +192,8 @@ export default function GuidesPage() {
                   time="2 min"
                 />
                 <GuideCard
-                  title="Sending a settle-up reminder"
-                  description="Nudge group members who still owe their share, without the awkward group chat message."
+                  title="Sending a payment reminder"
+                  description="Nudge group members who still need to settle, without the awkward group chat message."
                   time="2 min"
                 />
               </div>
@@ -233,7 +233,7 @@ export default function GuidesPage() {
                   </li>
                 ))}
               </ul>
-              <p className="rounded-lg border border-border bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 Still have questions? Visit{" "}
                 <Link
                   href="/support"

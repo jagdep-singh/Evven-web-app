@@ -43,7 +43,7 @@ function ResetPasswordForm() {
 
   return (
     <div className="w-full max-w-[420px] p-4">
-      <div className="rounded-3xl border border-border/40 bg-card/60 p-8 shadow-xl backdrop-blur-xl">
+      <div className="card rounded-3xl bg-card/60 p-8 shadow-xl backdrop-blur-xl">
         {complete ? (
           <div className="text-center">
             <CheckCircle size={28} className="mx-auto mb-4 text-primary" />
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
     <Suspense
       fallback={
         <div className="w-full max-w-[420px] p-4">
-          <div className="rounded-3xl border border-border/40 bg-card/60 p-8 shadow-xl backdrop-blur-xl">
+          <div className="card rounded-3xl bg-card/60 p-8 shadow-xl backdrop-blur-xl">
             <div className="mx-auto size-5 animate-spin rounded-full border-2 border-primary border-r-transparent" />
           </div>
         </div>

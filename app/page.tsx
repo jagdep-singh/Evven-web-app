@@ -11,10 +11,8 @@ import { FAQ } from "@/components/landing/personal/FAQ";
 import { CTA } from "@/components/landing/personal/CTA";
 import { Footer } from "@/components/landing/personal/Footer";
 import { useLandingAnimations } from "@/components/landing/useLandingAnimations";
-import { useRef } from "react";
 
 export default function HomePage() {
-  const mainRef = useRef(null);
   useLandingAnimations();
 
   return (

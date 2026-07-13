@@ -14,7 +14,7 @@ const features = [
   {
     title: "Real-time activity feed",
     description:
-      "See who added what, who paid, and who still owes — updated instantly for the whole team.",
+      "See who added what, who paid, and who still needs to settle — updated instantly for the whole team.",
   },
 ];
 

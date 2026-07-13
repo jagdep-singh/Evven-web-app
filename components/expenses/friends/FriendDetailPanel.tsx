@@ -38,9 +38,7 @@ export function FriendDetailPanel({
 }: FriendDetailPanelProps) {
   if (!friend && !loading && !error) {
     return (
-      <div
-        className="flex min-h-[22rem] items-center justify-center rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-5 text-center sm:min-h-[28rem] sm:p-6"
-      >
+      <div className="card flex min-h-[22rem] items-center justify-center p-5 text-center sm:min-h-[28rem] sm:p-6 rounded-[var(--evven-radius-card)]">
         <div className="max-w-sm">
           <div
             className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full"
@@ -53,7 +51,7 @@ export function FriendDetailPanel({
           </div>
           <p className="text-sm font-medium">Select a friend</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Pick someone from the list to see their expense history, settle their balance, or add a new expense.
+            Pick someone from the list to see their expense history, settle their payment, or add a new expense.
           </p>
         </div>
       </div>
@@ -62,10 +60,7 @@ export function FriendDetailPanel({
 
   if (error) {
     return (
-      <div
-        className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-5 text-sm"
-        style={{ color: "var(--evven-error)" }}
-      >
+      <div className="card rounded-[var(--evven-radius-card)] p-5 text-sm" style={{ color: "var(--evven-error)" }}>
         {error}
       </div>
     );
@@ -73,7 +68,7 @@ export function FriendDetailPanel({
 
   if (!friend) {
     return (
-      <div className="flex min-h-[22rem] items-center justify-center rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-5 sm:min-h-[28rem] sm:p-6">
+      <div className="card flex min-h-[22rem] items-center justify-center p-5 sm:min-h-[28rem] sm:p-6 rounded-[var(--evven-radius-card)]">
         <span className="animate-spin text-primary">
           <ArrowLeftRight size={18} />
         </span>
@@ -86,9 +81,7 @@ export function FriendDetailPanel({
 
   return (
     <div className="space-y-4">
-      <section
-        className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-4 sm:p-5"
-      >
+      <section className="card rounded-[var(--evven-radius-card)] p-4 sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-3">
             <div
@@ -163,26 +156,24 @@ export function FriendDetailPanel({
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-background)] p-4">
+          <div className="card rounded-[var(--evven-radius-card)] p-4">
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Balance</p>
             <p className="mt-2 text-sm font-medium">{formatSignedMoney(friend.net_balance ?? 0)}</p>
           </div>
-          <div className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-background)] p-4">
+          <div className="card rounded-[var(--evven-radius-card)] p-4">
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Status</p>
             <p className="mt-2 text-sm font-medium">
               {balanceState.tone === "neutral" ? "Settled up" : "Pending"}
             </p>
           </div>
-          <div className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-background)] p-4">
+          <div className="card rounded-[var(--evven-radius-card)] p-4">
             <p className="text-xs uppercase tracking-widest text-muted-foreground">History</p>
             <p className="mt-2 text-sm font-medium">{friend.expenses?.length ?? 0} transactions</p>
           </div>
         </div>
       </section>
 
-      <section
-        className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-4 sm:p-5"
-      >
+      <section className="card rounded-[var(--evven-radius-card)] p-4 sm:p-5">
         <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <div>
             <p className="text-sm font-medium">Transaction history</p>

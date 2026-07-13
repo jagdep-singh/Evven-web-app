@@ -114,7 +114,7 @@ export default function PrivacyPage() {
           <div>
             <Section id="what-we-collect" title="What We Collect">
               <p>We collect only what&apos;s needed to run the service.</p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border/30 bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Account data">
                   Your name, username, and email address when you sign up.
                 </Item>
@@ -155,7 +155,7 @@ export default function PrivacyPage() {
                   </li>
                 ))}
               </ul>
-              <p className="rounded-lg border border-border/30 bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 We do not use your data to train ML models or sell it to
                 advertisers. There are no ads on EvenUp.
               </p>
@@ -166,7 +166,7 @@ export default function PrivacyPage() {
                 We rely on a small set of trusted infrastructure providers to
                 operate the platform:
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border/30 bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Supabase">Database and authentication infrastructure.</Item>
                 <Item label="Resend">Transactional email delivery.</Item>
                 <Item label="Render">Backend hosting and deployment.</Item>
@@ -208,7 +208,7 @@ export default function PrivacyPage() {
 
             <Section id="your-rights" title="Your Rights">
               <p>You have the right to:</p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border/30 bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Access">Request a copy of your personal data.</Item>
                 <Item label="Correct">Update inaccurate or incomplete information.</Item>
                 <Item label="Delete">Permanently remove your account and associated data.</Item>

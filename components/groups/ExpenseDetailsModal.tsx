@@ -31,10 +31,9 @@ export function ExpenseDetailsModal({
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
       <div
-        className="relative w-full max-w-md rounded-3xl p-6 shadow-xl"
-        style={{ background: "white", border: "1px solid var(--evven-border)" }}
+        className="card relative w-full max-w-md rounded-3xl p-6 shadow-xl"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 p-1.5 rounded-lg" style={{ background: "var(--evven-surface)" }}>
+        <button onClick={onClose} className="absolute right-4 top-4 rounded-lg p-1.5" style={{ background: "var(--evven-surface)" }}>
           <X size={15} />
         </button>
 
@@ -51,20 +50,20 @@ export function ExpenseDetailsModal({
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="rounded-2xl p-4" style={{ background: "var(--evven-surface)" }}>
+          <div className="card rounded-2xl p-4">
             <p className="text-xs mb-1" style={{ color: "var(--evven-text-muted)" }}>Total</p>
             <p className="text-base font-semibold" style={{ color: "var(--evven-text-primary)" }}>
               {formatAmount(detailExpense.amount)}
             </p>
           </div>
-          <div className="rounded-2xl p-4" style={{ background: "var(--evven-surface)" }}>
+          <div className="card rounded-2xl p-4">
             <p className="text-xs mb-1" style={{ color: "var(--evven-text-muted)" }}>Split</p>
             <p className="text-base font-semibold capitalize" style={{ color: "var(--evven-text-primary)" }}>
               {detailExpense.split_type}
             </p>
           </div>
           {detailExpense.category && (
-            <div className="rounded-2xl p-4 col-span-2" style={{ background: "var(--evven-surface)" }}>
+            <div className="card col-span-2 rounded-2xl p-4">
               <p className="text-xs mb-1" style={{ color: "var(--evven-text-muted)" }}>Category</p>
               <p className="text-base font-semibold flex items-center gap-2" style={{ color: "var(--evven-text-primary)" }}>
                 {(() => {
@@ -90,7 +89,7 @@ export function ExpenseDetailsModal({
           ) : (
             <div className="space-y-2">
               {detailSplits.map((split) => (
-                <div key={split.id} className="flex items-center justify-between rounded-2xl px-4 py-3" style={{ background: "var(--evven-surface)" }}>
+                <div key={split.id} className="card flex items-center justify-between rounded-2xl px-4 py-3">
                   <span className="text-sm font-medium" style={{ color: "var(--evven-text-primary)" }}>
                     {userName(split.user_id)}
                     {split.user_id === currentUserId ? " (you)" : ""}

@@ -48,7 +48,7 @@ export default function DesktopPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
-      <div className="w-full max-w-md rounded-3xl border border-border/60 bg-card/80 p-8 text-center shadow-2xl backdrop-blur-xl">
+      <div className="card w-full max-w-md rounded-3xl bg-card/80 p-8 text-center shadow-2xl backdrop-blur-xl">
         <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           {expiredSession ? <ShieldAlert className="size-6" /> : <AlertCircle className="size-6" />}
         </div>

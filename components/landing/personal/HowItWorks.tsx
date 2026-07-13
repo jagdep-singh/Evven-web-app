@@ -15,7 +15,7 @@ export function HowItWorks() {
     {
       step: "Settle",
       title: "Close the loop",
-      desc: "See live balances, send a settlement reminder, and mark it paid. Done in five minutes, not five arguments.",
+      desc: "See live balances, send a payment reminder, and mark it paid. Done in five minutes, not five arguments.",
     },
   ];
 

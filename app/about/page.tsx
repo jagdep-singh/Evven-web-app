@@ -132,7 +132,7 @@ export default function AboutPage() {
                 handled. Fair, clear, and out of the way so you can get back
                 to the things that actually matter.
               </p>
-              <p className="rounded-lg border border-border bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 Our goal: be the last expense-splitting app you ever need to
                 download.
               </p>
@@ -141,7 +141,7 @@ export default function AboutPage() {
             <Section id="story" title="The Story">
               <p>
                 Evven started as a side project after one too many awkward
-                group chat moments trying to figure out who owed what after a
+                group chat moments trying to figure out who paid what after a
                 trip. The existing tools were either too complicated, too
                 ugly, or required everyone to sign up before they could see
                 a single number.
@@ -163,7 +163,7 @@ export default function AboutPage() {
                 people in it, and log expenses as they happen. Evven handles
                 the math and shows everyone exactly where things stand.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Groups">
                   One space per shared context — a flat, a trip, a team.
                   Everyone in the group sees the same picture.
@@ -174,7 +174,7 @@ export default function AboutPage() {
                 </Item>
                 <Item label="Balances">
                   Live running totals. No spreadsheet, no manual tallying —
-                  just who owes what to whom, right now.
+                  just who paid what, right now.
                 </Item>
                 <Item label="Settling up">
                   Mark payments as settled. The balance updates instantly
@@ -211,7 +211,7 @@ export default function AboutPage() {
                     better.
                 </p>
 
-                <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+                <div className="card mt-2 space-y-3 rounded-lg p-5">
                     <Item label="Jagdeep Singh">
                         Founder & Founding Engineer. Building the product and keeping the
                         lights on.

@@ -112,9 +112,9 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[120vh] w-screen overflow-hidden bg-background">
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-background">
       {/* Background Grid Distortion */}
-      <div className="absolute inset-0 flex h-[120vh] w-full items-center justify-center">
+      <div className="absolute inset-0 flex min-h-[100svh] w-full items-center justify-center">
         <Grainient
           color1="#325149"
           color2="#faf8f5"
@@ -142,19 +142,19 @@ export function Hero() {
       </div>
 
       {/* HERO CONTENT */}
-      <div className="relative z-10 flex h-[100vh] w-full items-center">
+      <div className="relative z-10 flex min-h-[100svh] w-full items-center px-5 py-20 sm:px-8 lg:px-0">
         {/* Left Content */}
-        <div className="ml-[15vw] flex w-full max-w-[720px] flex-col">
+        <div className="mx-auto flex w-full max-w-[720px] flex-col lg:ml-[15vw] lg:mx-0">
           <span
             ref={labelRef}
-            className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-[#000000]"
+            className="mb-5 text-[10px] font-medium uppercase tracking-[0.28em] text-[#000000] sm:mb-8 sm:text-xs sm:tracking-[0.35em]"
           >
             For Roommates, Trips & Everything In Between
           </span>
 
           <h1
             ref={headingRef}
-            className="hero-main-text text-7xl font-black leading-[1] text-slate-900 md:text-7xl lg:text-[6.5rem] tracking-tighter"
+            className="hero-main-text max-w-[12ch] text-5xl font-black leading-[0.95] tracking-tighter text-slate-900 sm:text-6xl md:text-7xl lg:text-[6.5rem]"
           >
             Split bills.
             <br />
@@ -163,25 +163,29 @@ export function Hero() {
 
           <p
             ref={paragraphRef}
-            className="mt-10 max-w-[520px] text-lg leading-[1.75] text-slate-700"
+            className="mt-6 max-w-[520px] text-base leading-[1.7] text-slate-700 sm:mt-10 sm:text-lg sm:leading-[1.75]"
           >
             Stop doing math in the group chat. Evven tracks every shared expense
             automatically, settles balances instantly, and keeps the &quot;you
             still owe me&quot; conversations out of your friendships.
           </p>
 
-          <div ref={buttonsRef} className="mt-14 flex items-center gap-6">
+          <div
+            ref={buttonsRef}
+            className="mt-10 flex flex-col gap-4 sm:mt-14 sm:flex-row sm:items-center sm:gap-6"
+          >
             <Link
               href="/signup"
               className="
                 group
-                inline-flex items-center gap-2
+                inline-flex w-full items-center justify-center gap-2
                 rounded-full
                 bg-slate-900
                 px-6 py-3
                 text-sm font-medium text-white
                 transition-all duration-300
                 hover:scale-[1.02]
+                sm:w-auto
               "
             >
               Start splitting for free
@@ -196,8 +200,10 @@ export function Hero() {
                 text-sm
                 font-medium
                 text-slate-700
+                text-left
                 transition-colors duration-300
                 hover:text-slate-900
+                sm:text-center
               "
             >
               See how it works ↓
@@ -205,13 +211,13 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Character */}
-        <div
-          ref={characterRef}
-          className="absolute right-50 bottom-0 hidden lg:block"
-        >
-          <Image
-            src="/hero-img.png"
+      {/* Character */}
+      <div
+        ref={characterRef}
+        className="absolute right-50 bottom-0 hidden lg:block"
+      >
+        <Image
+          src="/hero-img.png"
             alt="Hero Character"
             width={600}
             height={800}
@@ -228,7 +234,7 @@ export function Hero() {
       </div>
 
       {/* Bottom blur gradient */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 h-[20vh] bg-gradient-to-b from-transparent to-[#faf8f5]" />
+      <div className="absolute bottom-0 left-0 right-0 z-20 h-[14vh] bg-gradient-to-b from-transparent to-[#faf8f5] sm:h-[18vh]" />
     </section>
   );
 }

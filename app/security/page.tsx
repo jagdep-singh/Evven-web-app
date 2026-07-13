@@ -114,7 +114,7 @@ export default function SecurityPage() {
                 same care as financial information, because to the people
                 using it, it is.
               </p>
-              <p className="rounded-lg border border-border bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 Our approach: minimize what we collect, encrypt what we store,
                 and limit who can access it — including us.
               </p>
@@ -125,7 +125,7 @@ export default function SecurityPage() {
                 Evven runs on a small set of established, security-audited
                 infrastructure providers rather than self-hosted servers.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Hosting">
                   Frontend is served via Vercel&apos;s global edge network;
                   the backend runs on Render.
@@ -168,7 +168,7 @@ export default function SecurityPage() {
                 Access to production systems and customer data is tightly
                 restricted within our team.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Least privilege">
                   Only core team members have access to production
                   infrastructure, and only to the extent their role requires.
@@ -220,7 +220,7 @@ export default function SecurityPage() {
                 We take security reports seriously and welcome responsible
                 disclosure from researchers and users.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <Item label="Report to">
                   <span className="font-medium text-foreground">
                     security@evven.xyz
@@ -240,7 +240,7 @@ export default function SecurityPage() {
                   and provide a resolution timeline shortly after.
                 </Item>
               </div>
-              <p className="rounded-lg border border-border bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 We&apos;re a small team — we can&apos;t offer a paid bug
                 bounty program yet, but we will credit researchers (with
                 permission) for valid reports that lead to a fix.
