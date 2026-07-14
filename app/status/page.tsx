@@ -142,7 +142,7 @@ export default function StatusPage() {
             </Section>
 
             <Section id="components" title="System Components">
-              <div className="rounded-lg border border-border bg-white/[0.02] px-5">
+              <div className="card rounded-lg px-5">
                 <StatusRow name="Web app (evven.xyz)" status="operational" />
                 <StatusRow name="API & backend services" status="operational" />
                 <StatusRow name="Authentication" status="operational" />
@@ -154,7 +154,7 @@ export default function StatusPage() {
 
             <Section id="incidents" title="Incident History">
               <p>No incidents reported in the last 90 days.</p>
-              <p className="rounded-lg border border-border bg-white/[0.02] p-4 text-sm">
+              <p className="card rounded-lg p-4 text-sm">
                 When incidents occur, they&apos;ll be logged here with a
                 timestamp, affected components, and resolution notes — so you
                 can always see what happened and when it was fixed.

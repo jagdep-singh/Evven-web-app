@@ -40,12 +40,8 @@ export function GroupHeader({
         <div className="flex gap-2 shrink-0">
           <button
             onClick={onAddMember}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium border transition-all hover:opacity-80"
-            style={{
-              borderColor: "var(--evven-border)",
-              color: "var(--evven-text-primary)",
-              background: "white",
-            }}
+            className="card flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-all hover:opacity-80"
+            style={{ color: "var(--evven-text-primary)" }}
           >
             <UserPlus size={14} />
             <span className="hidden sm:inline">Add</span>

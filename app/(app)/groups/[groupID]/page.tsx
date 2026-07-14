@@ -506,7 +506,7 @@ export default function GroupDetailPage() {
 
   const isCreator = group?.created_by === currentUserId;
 
-  // Parse balances: positive = others owe you, negative = you owe
+  // Parse balances: positive = others paid more, negative = you paid more
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">

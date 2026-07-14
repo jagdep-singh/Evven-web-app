@@ -131,7 +131,7 @@ export default function ExpensesPage() {
         </div>
 
         <div
-          className="mb-5 inline-flex max-w-full flex-wrap gap-1 rounded-full p-1"
+          className="mb-5 inline-flex max-w-full flex-wrap gap-1 rounded-xl p-1"
           style={{ background: "var(--evven-surface)" }}
         >
           <button
@@ -179,14 +179,7 @@ export default function ExpensesPage() {
         </div>
 
         {error && (
-          <div
-            className="mb-4 rounded-(--evven-radius-card) p-4 text-sm"
-            style={{
-              background: "var(--evven-surface)",
-              color: "var(--evven-error)",
-              border: "0.5px solid var(--evven-border)",
-            }}
-          >
+          <div className="card mb-4 rounded-(--evven-radius-card) p-4 text-sm" style={{ color: "var(--evven-error)" }}>
             {error}
           </div>
         )}
@@ -196,13 +189,7 @@ export default function ExpensesPage() {
             <Loader2 size={20} className="animate-spin text-primary" />
           </div>
         ) : filteredExpenses.length === 0 ? (
-          <div
-            className="rounded-(--evven-radius-card) p-10 text-center"
-            style={{
-              background: "var(--color-background-primary, var(--evven-background))",
-              border: "0.5px solid var(--evven-border)",
-            }}
-          >
+          <div className="card rounded-(--evven-radius-card) p-10 text-center">
             <Receipt size={24} className="mx-auto mb-3 text-muted-foreground" />
             <p className="mb-1 text-sm font-medium">
               {expenses.length === 0 ? "No personal expenses yet" : "No matching expenses"}
@@ -231,11 +218,7 @@ export default function ExpensesPage() {
               return (
                 <div
                   key={expense.id}
-                  className="flex items-center gap-3 rounded-(--evven-radius-card) px-4 py-3.5 transition-colors hover:bg-(--evven-surface)"
-                  style={{
-                    background: "var(--color-background-primary, var(--evven-background))",
-                    border: "0.5px solid var(--evven-border)",
-                  }}
+                  className="card flex items-center gap-3 rounded-(--evven-radius-card) px-4 py-3.5 transition-colors hover:bg-(--evven-surface)"
                 >
                   <div
                     className="flex size-10 shrink-0 items-center justify-center rounded-xl"

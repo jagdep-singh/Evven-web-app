@@ -54,10 +54,7 @@ export default function EditExpensePage() {
             <Loader2 size={20} className="animate-spin text-primary" />
           </div>
         ) : (
-          <div
-            className="rounded-2xl border bg-white p-5 sm:p-6"
-            style={{ borderColor: "var(--evven-border)" }}
-          >
+          <div className="card rounded-2xl p-5 sm:p-6">
             <ExpenseForm
               initialValues={initialValues}
               submitLabel="Save changes"

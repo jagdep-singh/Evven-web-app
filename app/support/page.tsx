@@ -105,7 +105,7 @@ export default function SupportPage() {
                 New to Evven? Here&apos;s the fastest path to your first
                 split expense.
               </p>
-              <div className="mt-2 space-y-3 rounded-lg border border-border bg-white/[0.02] p-5">
+              <div className="card mt-2 space-y-3 rounded-lg p-5">
                 <div className="flex gap-3">
                   <span className="mt-0.5 min-w-[130px] shrink-0 text-sm font-medium text-foreground">
                     1. Create an account
@@ -173,7 +173,7 @@ export default function SupportPage() {
                   in the group instantly.
                 </QA>
                 <QA q="Does Evven handle payments?">
-                  No. Evven calculates who owes what, but doesn&apos;t move
+                  No. Evven calculates who paid what, but doesn&apos;t move
                   money. You settle up using whatever payment method your
                   group prefers, then mark it as settled in the app.
                 </QA>

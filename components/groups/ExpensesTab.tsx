@@ -25,10 +25,7 @@ export function ExpensesTab({
 }) {
   if (expenses.length === 0) {
     return (
-      <div
-        className="rounded-2xl p-8 text-center border"
-        style={{ background: "white", borderColor: "var(--evven-border)" }}
-      >
+      <div className="card rounded-2xl p-8 text-center">
         <Receipt size={20} className="mx-auto mb-3" style={{ color: "var(--evven-text-muted)" }} />
         <p className="text-sm font-medium mb-1" style={{ color: "var(--evven-text-primary)" }}>
           No expenses yet
@@ -54,8 +51,7 @@ export function ExpensesTab({
               void onViewExpense(exp);
             }
           }}
-          className="flex w-full cursor-pointer items-center gap-3 px-4 py-3.5 rounded-2xl border text-left transition-all hover:opacity-80"
-          style={{ background: "white", borderColor: "var(--evven-border)" }}
+          className="card flex w-full cursor-pointer items-center gap-3 px-4 py-3.5 rounded-2xl text-left transition-all hover:opacity-80"
         >
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"

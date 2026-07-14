@@ -28,13 +28,7 @@ export function FriendsSection() {
   };
 
   return (
-    <section
-      className="mb-4 rounded-(--evven-radius-card) p-5 sm:p-6"
-      style={{
-        background: "var(--color-background-primary, var(--evven-background))",
-        border: "0.5px solid var(--evven-border)",
-      }}
-    >
+    <section className="card mb-4 rounded-(--evven-radius-card) p-5 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -85,10 +79,7 @@ export function FriendsSection() {
           <Loader2 size={18} className="animate-spin text-primary" />
         </div>
       ) : filteredFriends.length === 0 ? (
-        <div
-          className="rounded-(--evven-radius-card) p-5 text-center"
-          style={{ background: "var(--evven-surface)" }}
-        >
+        <div className="card rounded-(--evven-radius-card) p-5 text-center">
           <p className="text-sm font-medium">
             {friends.length === 0 ? "No friends yet" : "No matching friends"}
           </p>

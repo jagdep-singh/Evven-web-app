@@ -2,7 +2,7 @@
 
 const features = [
   {
-    title: "No more \"who owes who\"",
+    title: "No more guessing who paid",
     description:
       "Add anyone to a group and every expense logged is instantly visible to everyone. No spreadsheets, no screenshots, no guessing.",
   },
@@ -14,7 +14,7 @@ const features = [
   {
     title: "Settle up in seconds",
     description:
-      "See exactly who needs to pay whom, mark it as settled, and move on. No more chasing people for Venmo.",
+      "See exactly who paid what, mark it as settled, and move on. No more chasing people for Venmo.",
   },
 ];
 

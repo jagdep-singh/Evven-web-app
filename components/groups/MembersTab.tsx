@@ -34,8 +34,7 @@ export function MembersTab({
         return (
           <div
             key={member.id}
-            className="flex items-center gap-3 px-4 py-3.5 rounded-2xl border"
-            style={{ background: "white", borderColor: "var(--evven-border)" }}
+            className="card flex items-center gap-3 px-4 py-3.5 rounded-2xl"
           >
             <div
               className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"

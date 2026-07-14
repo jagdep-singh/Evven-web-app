@@ -22,10 +22,7 @@ export function BalanceSummary({
   if (myBalances.length === 0) return null;
 
   return (
-    <div
-      className="rounded-2xl p-4 mb-5 border"
-      style={{ background: "white", borderColor: "var(--evven-border)" }}
-    >
+    <div className="card mb-5 rounded-2xl p-4">
       <p
         className="text-xs font-semibold uppercase tracking-widest mb-3"
         style={{ color: "var(--evven-text-muted)" }}
@@ -43,13 +40,13 @@ export function BalanceSummary({
                   {userName(uid)}
                 </span>
                 <div className="flex items-center gap-3">
-                  <span
+                <span
                     className="text-sm font-medium"
                     style={{ color: youOwe ? "#A32D2D" : "#0F6E56" }}
                   >
                     {youOwe
-                      ? `you owe ${formatAmount(displayAmount)}`
-                      : `owes you ${formatAmount(displayAmount)}`}
+                      ? `you paid ${formatAmount(displayAmount)} more`
+                      : `${userName(uid)} paid ${formatAmount(displayAmount)} more`}
                   </span>
                   {youOwe ? (
                     <button

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
-import { Loader2, Plus, Search } from "lucide-react";
+import { Loader2, Plus, Search, Users } from "lucide-react";
 import { createPersonalExpense } from "@/services/expenses";
 import { Button } from "@/components/ui/button";
 import { FriendCard } from "./FriendCard";
 import { FriendCreateDialog } from "./FriendCreateDialog";
 import { FriendDetailPanel } from "./FriendDetailPanel";
+import { formatMoney } from "./friend-utils";
 import { useFriendDetail } from "./use-friend-detail";
 import { useFriendsDirectory } from "./use-friends-directory";
 
@@ -33,6 +34,17 @@ export function FriendsWorkspace() {
     if (!normalized) return friends;
     return friends.filter((friend) => friend.name.toLowerCase().includes(normalized));
   }, [friends, query]);
+
+  const { owedToYou, youOwe } = useMemo(() => {
+    let positive = 0;
+    let negative = 0;
+    for (const friend of friends) {
+      const balance = Number(friend.net_balance ?? 0);
+      if (balance > 0) positive += balance;
+      if (balance < 0) negative += Math.abs(balance);
+    }
+    return { owedToYou: positive, youOwe: negative };
+  }, [friends]);
 
   const visualSelectedFriendId = selectedFriendId ?? friends[0]?.id ?? null;
 
@@ -114,62 +126,90 @@ export function FriendsWorkspace() {
 
   return (
     <div className="min-h-full bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-        <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
+        {/* Header */}
+        <div className="relative mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
               Friends
             </p>
-            <h1 className="text-2xl font-medium">People you split with</h1>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-              Keep a running view of who owes whom, settle balances when needed, and jump straight into a new expense when it is time.
+            <h1 className="mt-2 text-2xl font-medium leading-snug sm:text-[2rem]">
+              People you split with
+            </h1>
+            <p className="mt-2 max-w-xl text-sm leading-6" style={{ color: "var(--evven-text-muted)" }}>
+              Keep track of who paid what, settle balances, and jump into a new expense.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="hidden shrink-0 sm:block">
             <FriendCreateDialog
               onCreate={handleCreateFriend}
-              triggerLabel="Create friend"
+              triggerLabel="Add friend"
               title="Create a friend"
               description="Add someone once and reuse them across personal expenses."
             />
           </div>
         </div>
 
+        {/* Hero stats */}
+        <div
+          className="mb-4 overflow-hidden rounded-[30px] p-5 sm:p-6"
+          style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
+        >
+          <div className="grid grid-cols-3 gap-3 sm:gap-6">
+            <div>
+              <p className="text-2xl font-medium sm:text-3xl" style={{ fontFamily: "var(--font-mono)" }}>
+                {loading ? "—" : friends.length}
+              </p>
+              <p className="mt-1 text-xs opacity-80 sm:text-sm">Friends</p>
+            </div>
+            <div>
+              <p className="text-2xl font-medium sm:text-3xl" style={{ fontFamily: "var(--font-mono)" }}>
+                {loading ? "—" : formatMoney(owedToYou)}
+              </p>
+              <p className="mt-1 text-xs opacity-80 sm:text-sm">Paid back to you</p>
+            </div>
+            <div>
+              <p className="text-2xl font-medium sm:text-3xl" style={{ fontFamily: "var(--font-mono)" }}>
+                {loading ? "—" : formatMoney(youOwe)}
+              </p>
+              <p className="mt-1 text-xs opacity-80 sm:text-sm">Paid by you</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Search + mobile add */}
         <div className="mb-4 grid gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search
               size={15}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2"
+              style={{ color: "var(--evven-text-muted)" }}
             />
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search friends"
-              className="w-full rounded-[var(--evven-radius-card)] py-2.5 pl-10 pr-4 text-sm outline-none"
+              className="w-full rounded-2xl py-2.5 pl-10 pr-4 text-sm outline-none"
               style={{
                 background: "var(--color-background-primary, var(--evven-background))",
                 border: "0.5px solid var(--evven-border)",
               }}
             />
           </div>
-          <div
-            className="rounded-[var(--evven-radius-card)] px-4 py-2.5 text-sm"
-            style={{
-              background: "var(--color-background-primary, var(--evven-background))",
-              border: "0.5px solid var(--evven-border)",
-            }}
-          >
-            <span className="text-muted-foreground">Friends </span>
-            <span className="font-semibold" style={{ fontFamily: "var(--font-mono)" }}>
-              {loading ? "..." : friends.length}
-            </span>
+          <div className="sm:hidden">
+            <FriendCreateDialog
+              onCreate={handleCreateFriend}
+              triggerLabel="Add friend"
+              title="Create a friend"
+              description="Add someone once and reuse them across personal expenses."
+            />
           </div>
         </div>
 
         {error && (
           <div
-            className="mb-4 rounded-[var(--evven-radius-card)] p-4 text-sm"
+            className="mb-4 rounded-2xl p-4 text-sm"
             style={{
               background: "var(--evven-surface)",
               color: "var(--evven-error)",
@@ -181,10 +221,7 @@ export function FriendsWorkspace() {
         )}
 
         <div className="grid gap-5 lg:grid-cols-[360px_1fr]">
-          <section
-            ref={detailSectionRef}
-            className="order-1 space-y-5 lg:order-2"
-          >
+          <section ref={detailSectionRef} className="order-1 space-y-5 lg:order-2">
             <FriendDetailPanel
               friend={activeFriend}
               loading={friendDetailLoading}
@@ -198,17 +235,27 @@ export function FriendsWorkspace() {
 
           <aside className="order-2 space-y-3 lg:order-1">
             {loading ? (
-              <div className="flex h-40 items-center justify-center rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)]">
+              <div
+                className="flex h-40 items-center justify-center rounded-3xl"
+                style={{ border: "0.5px solid var(--evven-border)", background: "var(--evven-surface)" }}
+              >
                 <Loader2 size={18} className="animate-spin text-primary" />
               </div>
             ) : filteredFriends.length === 0 ? (
               <div
-                className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-6"
+                className="rounded-3xl p-6"
+                style={{ border: "0.5px solid var(--evven-border)", background: "var(--evven-surface)" }}
               >
+                <div
+                  className="mb-4 flex size-11 items-center justify-center rounded-full"
+                  style={{ background: "var(--evven-accent-secondary)", color: "var(--evven-accent-primary)" }}
+                >
+                  <Users size={18} />
+                </div>
                 <p className="text-sm font-medium">
                   {friends.length === 0 ? "No friends yet" : "No matching friends"}
                 </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm" style={{ color: "var(--evven-text-muted)" }}>
                   {friends.length === 0
                     ? "Create a friend to keep track of shared spending."
                     : "Try a different search term."}

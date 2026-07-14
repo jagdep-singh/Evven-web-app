@@ -28,8 +28,8 @@ export function getGhostBalanceLabel(friend: Ghost) {
   }
 
   return balance > 0
-    ? `${friend.name} owes you ${formatMoney(balance)}`
-    : `You owe ${friend.name} ${formatMoney(balance)}`;
+    ? `${friend.name} paid ${formatMoney(balance)} more`
+    : `You paid ${formatMoney(balance)} more`;
 }
 
 export function getGhostBalanceState(friend: Ghost) {
@@ -47,18 +47,29 @@ export function getGhostBalanceState(friend: Ghost) {
   if (balance > 0) {
     return {
       tone: "positive" as const,
-      title: `${friend.name} owes you ${formatMoney(balance)}`,
-      helper: "Money coming back to you",
+      title: `${friend.name} paid ${formatMoney(balance)} more`,
+      helper: "They paid more than their share",
       amount: balance,
     };
   }
 
   return {
     tone: "negative" as const,
-    title: `You owe ${friend.name} ${formatMoney(balance)}`,
-    helper: "Money you need to settle",
+    title: `You paid ${formatMoney(balance)} more`,
+    helper: "You paid more than your share",
     amount: balance,
   };
+}
+
+export function getGhostExpenseDirectionLabel(
+  direction: SettlementDirection,
+  friendName?: string | null
+) {
+  if (direction === "they_owe") {
+    return "You paid";
+  }
+
+  return friendName ? `${friendName} paid` : "They paid";
 }
 
 export function getGhostExpenseSummary(expense: PersonalExpense) {
@@ -69,11 +80,11 @@ export function getGhostExpenseSummary(expense: PersonalExpense) {
   const displayName = friendName ?? "Friend";
 
   if (expense.settlement_direction === "you_owe") {
-    return `You owe ${displayName} ${formatMoney(amount)}`;
+    return `${displayName} paid ${formatMoney(amount)}`;
   }
 
   if (expense.settlement_direction === "they_owe") {
-    return `${displayName} owes you ${formatMoney(amount)}`;
+    return `You paid ${formatMoney(amount)}`;
   }
 
   return `With ${displayName}`;
@@ -89,11 +100,11 @@ export function getGhostHistoryStatus(expense: PersonalExpense) {
 
 export function getGhostHistoryDirection(expense: PersonalExpense) {
   if (expense.settlement_direction === "you_owe") {
-    return "You owe";
+    return "They paid";
   }
 
   if (expense.settlement_direction === "they_owe") {
-    return "They owe";
+    return "You paid";
   }
 
   return "Expense";

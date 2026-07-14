@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="w-full max-w-[420px] p-4">
-      <div className="rounded-3xl border border-border/40 bg-card/60 p-8 shadow-xl backdrop-blur-xl">
+      <div className="card rounded-3xl bg-card/60 p-8 shadow-xl backdrop-blur-xl">
         {sent ? (
           <div className="text-center">
             <MailCheck size={28} className="mx-auto mb-4 text-primary" />

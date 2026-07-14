@@ -62,10 +62,9 @@ export function ExpenseEditorModal({
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
       <div
-        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl p-6 shadow-xl"
-        style={{ background: "white", border: "1px solid var(--evven-border)" }}
+        className="card relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl p-6 shadow-xl"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 p-1.5 rounded-lg" style={{ background: "var(--evven-surface)" }}>
+        <button onClick={onClose} className="absolute right-4 top-4 rounded-lg p-1.5" style={{ background: "var(--evven-surface)" }}>
           <X size={15} />
         </button>
         <h2 className="text-base font-semibold mb-4" style={{ color: "var(--evven-text-primary)" }}>
@@ -152,9 +151,9 @@ export function ExpenseEditorModal({
                         selected ? prev.filter((id) => id !== userId) : [...prev, userId]
                       );
                     }}
-                    className="flex items-center justify-between rounded-xl border px-3 py-2 text-sm"
+                    className="card flex items-center justify-between rounded-xl px-3 py-2 text-sm"
                     style={{
-                      background: selected ? "#EEEDFE" : "white",
+                      background: selected ? "#EEEDFE" : "var(--evven-card-background)",
                       borderColor: selected ? "#534AB7" : "var(--evven-border)",
                     }}
                   >
@@ -170,7 +169,7 @@ export function ExpenseEditorModal({
           </div>
 
           {expSplitType !== "equal" && (
-            <div className="rounded-2xl border p-3" style={{ borderColor: "var(--evven-border)" }}>
+            <div className="card rounded-2xl p-3">
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
                   {expSplitType === "exact" ? "Exact amounts" : "Percentages"}
@@ -196,11 +195,11 @@ export function ExpenseEditorModal({
                 </div>
               </div>
               {splitParticipantIds.length === 0 ? (
-                <p className="rounded-xl px-3 py-2 text-xs" style={{ background: "var(--evven-surface)", color: "var(--evven-error)" }}>
+                <p className="card rounded-xl px-3 py-2 text-xs" style={{ color: "var(--evven-error)" }}>
                   Group members are still loading. Try again in a moment.
                 </p>
               ) : selectedParticipants.length === 0 ? (
-                <p className="rounded-xl px-3 py-2 text-xs" style={{ background: "var(--evven-surface)", color: "var(--evven-text-muted)" }}>
+                <p className="card rounded-xl px-3 py-2 text-xs" style={{ color: "var(--evven-text-muted)" }}>
                   Select at least one participant to enter split amounts.
                 </p>
               ) : (

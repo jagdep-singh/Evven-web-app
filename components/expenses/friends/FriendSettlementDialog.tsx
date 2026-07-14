@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { getGhostExpenseDirectionLabel } from "./friend-utils";
 
 interface FriendSettlementDialogProps {
   friend: Ghost | null;
@@ -97,7 +98,7 @@ export function FriendSettlementDialog({
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Direction
+                Paid by
               </label>
               <select
                 value={direction}
@@ -109,10 +110,10 @@ export function FriendSettlementDialog({
                 }}
               >
                 <option value="they_owe">
-                  {friend ? `${friend.name} owes you` : "They owe you"}
+                  {getGhostExpenseDirectionLabel("they_owe", friend?.name)}
                 </option>
                 <option value="you_owe">
-                  {friend ? `You owe ${friend.name}` : "You owe them"}
+                  {getGhostExpenseDirectionLabel("you_owe", friend?.name)}
                 </option>
               </select>
             </div>
@@ -148,14 +149,12 @@ export function FriendSettlementDialog({
             />
           </div>
 
-          <div
-            className="rounded-[var(--evven-radius-card)] border border-[var(--evven-border)] bg-[var(--evven-surface)] p-4 text-sm"
-          >
+          <div className="card rounded-[var(--evven-radius-card)] p-4 text-sm">
             <p className="font-medium">Preview</p>
             <p className="mt-1 text-muted-foreground">
               {direction === "you_owe"
-                ? `You will give ${friend?.name ?? "them"} ${formatMoney(amount || 0)}.`
-                : `You will get ${formatMoney(amount || 0)} from ${friend?.name ?? "them"}.`}
+                ? `${friend?.name ?? "They"} paid ${formatMoney(amount || 0)}.`
+                : `You paid ${formatMoney(amount || 0)}.`}
             </p>
           </div>
 

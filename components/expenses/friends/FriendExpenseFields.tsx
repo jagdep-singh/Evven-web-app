@@ -2,7 +2,12 @@
 
 import { UserRoundPlus } from "lucide-react";
 import { FriendCreateDialog } from "./FriendCreateDialog";
-import { getGhostBalanceLabel, getInitials, getDefaultSettlementDirection } from "./friend-utils";
+import {
+  getDefaultSettlementDirection,
+  getGhostBalanceLabel,
+  getGhostExpenseDirectionLabel,
+  getInitials,
+} from "./friend-utils";
 import { useFriendsDirectory } from "./use-friends-directory";
 import type { Ghost, SettlementDirection } from "@/types";
 
@@ -32,11 +37,7 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
 
   return (
     <section
-      className="rounded-xl p-4"
-      style={{
-        background: "var(--evven-surface)",
-        border: "0.5px solid var(--evven-border)",
-      }}
+      className="card rounded-xl p-4"
     >
       <div className="mb-4 flex items-start gap-3">
         <div
@@ -51,7 +52,7 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
         <div>
           <p className="text-sm font-medium">Friend</p>
           <p className="text-xs text-muted-foreground">
-            Optional context for who owes whom.
+            Optional context for who paid.
           </p>
         </div>
       </div>
@@ -61,8 +62,8 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
           <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Select friend
           </label>
-          <select
-            value={values.ghost_id}
+            <select
+              value={values.ghost_id}
             onChange={(event) => {
               const ghostId = event.target.value;
               const friend = friends.find((item) => item.id === ghostId) ?? null;
@@ -123,7 +124,7 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Direction
+                Paid by
               </label>
               <select
                 value={values.settlement_direction}
@@ -139,10 +140,10 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
                 }}
               >
                 <option value="they_owe">
-                  {activeFriend ? `${activeFriend.name} owes you` : "They owe you"}
+                  {getGhostExpenseDirectionLabel("they_owe", activeFriend?.name)}
                 </option>
                 <option value="you_owe">
-                  {activeFriend ? `You owe ${activeFriend.name}` : "You owe them"}
+                  {getGhostExpenseDirectionLabel("you_owe", activeFriend?.name)}
                 </option>
               </select>
             </div>
@@ -171,8 +172,8 @@ export function FriendExpenseFields({ amount, values, onChange }: FriendExpenseF
         {values.ghost_id && activeFriend && amount && (
           <p className="text-xs text-muted-foreground">
             {values.settlement_direction === "you_owe"
-              ? `You will give ${activeFriend.name} ₹${Number(amount).toLocaleString("en-IN", { maximumFractionDigits: 2 })}.`
-              : `You will get ₹${Number(amount).toLocaleString("en-IN", { maximumFractionDigits: 2 })} from ${activeFriend.name}.`}
+              ? `${activeFriend.name} paid ₹${Number(amount).toLocaleString("en-IN", { maximumFractionDigits: 2 })}.`
+              : `You paid ₹${Number(amount).toLocaleString("en-IN", { maximumFractionDigits: 2 })}.`}
           </p>
         )}
       </div>

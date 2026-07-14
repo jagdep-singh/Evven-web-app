@@ -40,10 +40,7 @@ export default function NewExpensePage() {
           </p>
           <h1 className="text-2xl font-medium">Add expense</h1>
         </div>
-        <div
-          className="rounded-2xl border bg-white p-5 sm:p-6"
-          style={{ borderColor: "var(--evven-border)" }}
-        >
+        <div className="card rounded-2xl p-5 sm:p-6">
           <ExpenseForm
             initialValues={initialValues}
             submitLabel="Add expense"

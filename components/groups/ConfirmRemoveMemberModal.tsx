@@ -22,13 +22,12 @@ export function ConfirmRemoveMemberModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={removing ? undefined : onClose} />
       <div
-        className="relative w-full max-w-sm rounded-3xl p-6 shadow-xl"
-        style={{ background: "white", border: "1px solid var(--evven-border)" }}
+        className="card relative w-full max-w-sm rounded-3xl p-6 shadow-xl"
       >
         <button
           onClick={onClose}
           disabled={removing}
-          className="absolute top-4 right-4 p-1.5 rounded-lg disabled:opacity-50"
+          className="absolute right-4 top-4 rounded-lg p-1.5 disabled:opacity-50"
           style={{ background: "var(--evven-surface)" }}
         >
           <X size={15} />
@@ -52,13 +51,13 @@ export function ConfirmRemoveMemberModal({
             type="button"
             onClick={onClose}
             disabled={removing}
-            className="flex-1 rounded-xl border px-4 py-2.5 text-sm font-medium disabled:opacity-50"
-            style={{
-              borderColor: "var(--evven-border)",
-              color: "var(--evven-text-primary)",
-              background: "white",
-            }}
-          >
+          className="flex-1 rounded-xl border px-4 py-2.5 text-sm font-medium disabled:opacity-50"
+          style={{
+            borderColor: "var(--evven-border)",
+            color: "var(--evven-text-primary)",
+            background: "var(--evven-card-background)",
+          }}
+        >
             Cancel
           </button>
           <button
