@@ -102,6 +102,10 @@ export function GoogleSignInButton() {
     if (window.google?.accounts?.id) {
       initializeGoogle();
     }
+    if (!clientId || !buttonRef.current) return;
+    if (window.google?.accounts?.id) {
+      initializeGoogle();
+    }
   }, [initializeGoogle, clientId]);
 
   if (!clientId) {
