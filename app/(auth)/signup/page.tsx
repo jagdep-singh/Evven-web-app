@@ -126,7 +126,12 @@ export default function Register() {
                 <div className="w-full border-t border-border/40" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="card bg-card/60 px-4 text-muted-foreground sm:px-5">Or continue with</span>
+                <span
+                  className="card bg-card/60 px-4 text-muted-foreground border-none shadow-none"
+                  style={{ border: "none", boxShadow: "none" }}
+                >
+                  Or continue with
+                </span>
               </div>
             </div>
 
