@@ -1,7 +1,7 @@
 /**
  * DiceBear avatar helpers.
  *
- * only one style is offered app-wide ("notionists-neutral").
+ * Product decision: only one style is offered app-wide ("notionists-neutral").
  * Variety comes entirely from randomized seeds, not from switching styles.
  * If that ever changes, this is the single place to add a `style` param.
  */
@@ -29,4 +29,41 @@ export function randomAvatarSeed(): string {
 export function isDicebearAvatarUrl(url: string | null | undefined): boolean {
   if (!url) return false;
   return url.startsWith(`https://api.dicebear.com/`) && url.includes(`/${AVATAR_STYLE}/`);
+}
+
+/**
+ * Recovers the seed behind a previously-generated avatar URL so the picker
+ * can pre-select the user's actual current avatar (not just a name-derived
+ * placeholder). Returns null for non-DiceBear URLs (e.g. a Google photo).
+ */
+export function extractSeedFromAvatarUrl(url: string | null | undefined): string | null {
+  if (!isDicebearAvatarUrl(url)) return null;
+  try {
+    const seed = new URL(url as string).searchParams.get("seed");
+    return seed ? decodeURIComponent(seed) : null;
+  } catch {
+    return null;
+  }
+}
+
+const WASH_TINTS: readonly string[] = [
+  "var(--evven-accent-primary)", 
+  "var(--evven-error)", 
+  "#1E3A5F", 
+  "#6E1F2E", 
+  "var(--evven-text-muted)",
+];
+ 
+export function seedToGradient(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  const tint = WASH_TINTS[Math.abs(hash) % WASH_TINTS.length];
+  return (
+    `linear-gradient(135deg, ` +
+    `color-mix(in srgb, ${tint} 8%, var(--evven-surface)), ` +
+    `color-mix(in srgb, ${tint} 16%, var(--evven-surface)))`
+  );
 }
