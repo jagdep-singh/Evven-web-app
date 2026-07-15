@@ -17,6 +17,14 @@ import { getInitials } from "@/components/expenses/friends";
 import { updateCurrentUser } from "@/services/users";
 import { useAuthStore } from "@/store/auth-store";
 import type { User } from "@/types/user";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { AvatarPicker } from "@/components/onboarding/AvatarPicker";
 
 function surfaceCard(extra?: React.CSSProperties): React.CSSProperties {
   return {
@@ -46,14 +54,18 @@ function ProfileEditor({
   const logout = useAuthStore((state) => state.logout);
 
   const [name, setName] = useState(user.name);
-  const [profilePicture, setProfilePicture] = useState(user.profile_picture ?? "");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
+  const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
+  const [avatarSaving, setAvatarSaving] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+
+  const profilePicture = user.profile_picture ?? "";
   const displayName = name || user.name;
-  const dirty = name.trim() !== user.name || (profilePicture.trim() || "") !== (user.profile_picture ?? "");
+  const dirty = name.trim() !== user.name;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,16 +75,27 @@ function ProfileEditor({
     setMessage("");
     setError("");
     try {
-      const updatedUser = await updateCurrentUser({
-        name: name.trim(),
-        profile_picture: profilePicture.trim() || null,
-      });
+      const updatedUser = await updateCurrentUser({ name: name.trim() });
       setUser(updatedUser);
       setMessage("Profile updated.");
     } catch {
       setError("Could not update your profile.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleAvatarConfirm = async (avatarUrl: string) => {
+    setAvatarError("");
+    setAvatarSaving(true);
+    try {
+      const updatedUser = await updateCurrentUser({ profile_picture: avatarUrl });
+      setUser(updatedUser);
+      setAvatarDialogOpen(false);
+    } catch {
+      setAvatarError("Could not update your avatar.");
+    } finally {
+      setAvatarSaving(false);
     }
   };
 
@@ -114,21 +137,34 @@ function ProfileEditor({
         >
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              {profilePicture ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={profilePicture}
-                  alt={displayName}
-                  className="size-16 shrink-0 rounded-full object-cover ring-2 ring-white/25 sm:size-20"
-                />
-              ) : (
-                <div
-                  className="flex size-16 shrink-0 items-center justify-center rounded-full text-xl font-medium ring-2 ring-white/25 sm:size-20"
-                  style={{ background: "rgba(255,255,255,0.15)" }}
+              <button
+                type="button"
+                onClick={() => setAvatarDialogOpen(true)}
+                aria-label="Change avatar"
+                className="group relative shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-(--evven-accent-primary)"
+              >
+                {profilePicture ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={profilePicture}
+                    alt={displayName}
+                    className="size-16 rounded-full object-cover ring-2 ring-white/25 transition-opacity group-hover:opacity-80 sm:size-20"
+                  />
+                ) : (
+                  <div
+                    className="flex size-16 items-center justify-center rounded-full text-xl font-medium ring-2 ring-white/25 transition-opacity group-hover:opacity-80 sm:size-20"
+                    style={{ background: "rgba(255,255,255,0.15)" }}
+                  >
+                    {displayName ? getInitials(displayName) : <UserRound size={26} />}
+                  </div>
+                )}
+                <span
+                  className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-wide opacity-0 transition-opacity group-hover:opacity-100"
+                  style={{ background: "rgba(0,0,0,0.45)", color: "white" }}
                 >
-                  {displayName ? getInitials(displayName) : <UserRound size={26} />}
-                </div>
-              )}
+                  Change
+                </span>
+              </button>
               <div className="min-w-0">
                 <p className="truncate text-xl font-medium sm:text-2xl">{displayName}</p>
                 <p className="mt-0.5 truncate text-sm opacity-80">{user.email}</p>
@@ -233,20 +269,6 @@ function ProfileEditor({
             />
           </div>
 
-          <div className="mb-5">
-            <label className="mb-2 block text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--evven-text-muted)" }}>
-              Profile picture URL
-            </label>
-            <input
-              value={profilePicture}
-              onChange={(event) => setProfilePicture(event.target.value)}
-              type="url"
-              placeholder="https://..."
-              className="w-full rounded-2xl px-4 py-2.5 text-sm outline-none"
-              style={{ background: "var(--evven-surface)", border: "0.5px solid var(--evven-border)" }}
-            />
-          </div>
-
           {message && <p className="mb-4 text-sm" style={{ color: "var(--evven-accent-primary)" }}>{message}</p>}
           {error && <p className="mb-4 text-sm" style={{ color: "var(--evven-error)" }}>{error}</p>}
 
@@ -303,6 +325,30 @@ function ProfileEditor({
           </div>
         </div>
       </div>
+
+      <Dialog open={avatarDialogOpen} onOpenChange={setAvatarDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change avatar</DialogTitle>
+            <DialogDescription>
+              Pick a new look, or shuffle for more options.
+            </DialogDescription>
+          </DialogHeader>
+
+          <AvatarPicker
+            initialSeed={user.name}
+            confirmLabel="Save avatar"
+            isSaving={avatarSaving}
+            onConfirm={handleAvatarConfirm}
+          />
+
+          {avatarError && (
+            <p className="mt-3 text-sm" style={{ color: "var(--evven-error)" }}>
+              {avatarError}
+            </p>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

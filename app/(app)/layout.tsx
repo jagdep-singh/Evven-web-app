@@ -275,12 +275,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isInitialized, router]);
 
+  // any authenticated user without a profile_picture — not
+  // just brand-new signups — gets routed through the same required avatar
+  // step before they can see the dashboard.
+  useEffect(() => {
+    if (isInitialized && isAuthenticated && user && !user.profile_picture) {
+      router.replace("/avatar-setup");
+    }
+  }, [isInitialized, isAuthenticated, user, router]);
+
   const handleLogout = () => {
     logout();
     router.replace("/login");
   };
 
-  if (!isInitialized || !isAuthenticated) {
+  if (!isInitialized || !isAuthenticated || (user && !user.profile_picture)) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <div
