@@ -28,7 +28,7 @@ export default function Register() {
     setIsLoading(true);
     try {
       await signup(name, email, password);
-      router.push("/dashboard");
+      router.push("/avatar-setup");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
