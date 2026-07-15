@@ -1,8 +1,9 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { seedToGradient } from "@/lib/dicebear";
 
 interface AvatarCardProps {
   url: string;
@@ -18,6 +19,7 @@ export function AvatarCard({ url, seed, selected, onSelect }: AvatarCardProps) {
       onClick={onSelect}
       aria-pressed={selected}
       aria-label="Choose this avatar"
+      data-seed={seed}
       className={cn(
         "relative flex aspect-square items-center justify-center rounded-2xl p-2 transition-all duration-150",
         "hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--evven-accent-primary) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -31,12 +33,17 @@ export function AvatarCard({ url, seed, selected, onSelect }: AvatarCardProps) {
           : "var(--evven-surface)",
       }}
     >
-      {/* on purpose there is no `size` prop here coz Avatar's fixed-size variants
-          fight with the responsive grid.... Overriding className with
-          "size-full" lets twMerge drop the base size utility */}
+      {/* Deliberately no `size` prop here — Avatar's fixed-size variants
+          fight with the responsive grid. Overriding className with
+          "size-full" lets twMerge drop the base size utility cleanly. */}
       <Avatar className="size-full">
         <AvatarImage src={url} alt="" />
-        <AvatarFallback>{seed.slice(0, 2).toUpperCase()}</AvatarFallback>
+        <AvatarFallback
+          className="animate-pulse text-white"
+          style={{ background: seedToGradient(seed) }}
+        >
+          <Sparkles className="size-1/3 opacity-70" />
+        </AvatarFallback>
       </Avatar>
 
       {selected && (

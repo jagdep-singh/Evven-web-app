@@ -327,7 +327,10 @@ function ProfileEditor({
       </div>
 
       <Dialog open={avatarDialogOpen} onOpenChange={setAvatarDialogOpen}>
-        <DialogContent>
+        <DialogContent
+          className="sm:max-w-md bg-card"
+          style={{ backgroundColor: "var(--evven-card-background, white)" }}
+        >
           <DialogHeader>
             <DialogTitle>Change avatar</DialogTitle>
             <DialogDescription>

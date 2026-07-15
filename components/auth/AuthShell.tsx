@@ -12,47 +12,39 @@ export function AuthShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
   const isLogin = pathname === "/login";
-  const mobileTitle = isLogin ? "Welcome back" : "Create your account";
 
   return (
     <div className="min-h-[100svh] overflow-x-hidden bg-background">
-      <div className="md:hidden">
-        <div className="flex items-center justify-between px-5 pb-4 pt-4">
-          <Link href="/" className="inline-flex items-center">
-            <Image
-              src="/EvenUp-white.svg"
-              alt="EvenUp"
-              width={66}
-              height={66}
-              className="invert"
-              priority
-            />
-          </Link>
-        </div>
+      <div className="relative min-h-[100svh] md:hidden">
+        <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-20 top-64 h-64 w-64 rounded-full bg-amber-400/[0.06] blur-3xl" />
 
-        <div className="flex min-h-[calc(100svh-88px)] items-start px-4 pb-6">
-          <div className="w-full">
-            <div className="mx-auto w-full max-w-md">
-              <div className="card mb-4 rounded-[2rem] bg-card/40 px-5 py-4 shadow-lg backdrop-blur-xl">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-                  {mobileTitle}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-foreground/80">
-                  {isLogin
-                    ? "Sign in to keep your balances in sync."
-                    : "Set up your account in a couple of steps."}
-                </p>
-              </div>
+        <div className="relative flex min-h-[100svh] flex-col">
+          <div className="flex items-center justify-between px-5 pt-6">
+            <Link href="/" className="inline-flex items-center">
+              <Image
+                src="/EvenUp-white.svg"
+                alt="EvenUp"
+                width={40}
+                height={40}
+                className="invert"
+                priority
+              />
+            </Link>
+          </div>
 
-              <div className="mx-auto w-full">{children}</div>
-            </div>
+          <div className="flex flex-1 items-center justify-center px-4 py-8">
+            <div className="w-full max-w-md">{children}</div>
           </div>
         </div>
       </div>
 
-      <div className="relative hidden min-h-[100svh] md:flex">
+      {/* ---------------------------------------------------------------- */}
+      {/* Desktop: two-pane layout with the character animation as the     */}
+      {/* signature element. Unchanged in structure, lightly tightened.    */}
+      {/* ---------------------------------------------------------------- */}
+      <div className="relative hidden min-h-[100svh] md:flex md:overflow-y-auto">
         <div className="fixed left-8 top-6 z-50">
           <Link href="/">
             <Image
@@ -67,7 +59,7 @@ export function AuthShell({
         </div>
 
         {/* LEFT SLOT */}
-        <div className="relative flex w-1/2 items-center justify-center overflow-hidden">
+        <div className="relative flex w-1/2 items-center justify-center overflow-y-auto overflow-x-hidden px-6 py-10">
           <AnimatePresence mode="wait">
             {!isLogin && (
               <motion.div
@@ -88,7 +80,7 @@ export function AuthShell({
         </div>
 
         {/* RIGHT SLOT */}
-        <div className="relative flex w-1/2 items-center justify-center overflow-hidden">
+        <div className="relative flex w-1/2 items-center justify-center overflow-y-auto overflow-x-hidden px-6 py-10">
           <AnimatePresence mode="wait">
             {isLogin && (
               <motion.div
