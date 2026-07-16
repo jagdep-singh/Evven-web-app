@@ -6,7 +6,9 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 
-import Grainient from "@/components/ui/Grainient";
+import dynamic from "next/dynamic";
+
+const Grainient = dynamic(() => import("@/components/ui/Grainient"), { ssr: false });
 
 export function TeamsHero() {
   const characterRef = useRef<HTMLDivElement>(null);

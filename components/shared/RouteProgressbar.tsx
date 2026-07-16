@@ -19,22 +19,27 @@ export function RouteProgressBar() {
             className="h-full origin-left"
             style={{
               background:
-                "linear-gradient(90deg, var(--evven-accent-primary), color-mix(in srgb, var(--evven-accent-primary) 60%, white))",
-              boxShadow: "0 0 8px color-mix(in srgb, var(--evven-accent-primary) 70%, transparent)",
+                "linear-gradient(90deg, var(--evven-accent-primary), color-mix(in srgb, var(--evven-accent-primary) 70%, white))",
+              boxShadow: "0 0 12px color-mix(in srgb, var(--evven-accent-primary) 50%, transparent), 0 0 4px color-mix(in srgb, var(--evven-accent-primary) 30%, transparent)",
             }}
             initial={{ scaleX: 0, opacity: 1 }}
             animate={{
-              scaleX: shouldReduceMotion ? 1 : 0.78,
+              scaleX: shouldReduceMotion ? 1 : [0.3, 0.7, 0.85],
               transition: shouldReduceMotion
                 ? { duration: 0 }
-                : { duration: 0.7, ease: [0.4, 0, 0.2, 1] },
+                : {
+                    scaleX: {
+                      duration: 1.2,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
             }}
             exit={{
               scaleX: 1,
               opacity: 0,
               transition: shouldReduceMotion
                 ? { duration: 0 }
-                : { duration: 0.28, ease: "easeOut" },
+                : { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
             }}
           />
         )}

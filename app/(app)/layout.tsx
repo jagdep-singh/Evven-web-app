@@ -49,6 +49,7 @@ function isActiveRoute(pathname: string, href: string) {
 function Dock({ pathname, variant }: { pathname: string; variant: "mobile" | "desktop" }) {
   const isDesktop = variant === "desktop";
   const { navigate } = useNavigation();
+  const router = useRouter();
 
   return (
     <nav
@@ -84,6 +85,9 @@ function Dock({ pathname, variant }: { pathname: string; variant: "mobile" | "de
               href={href}
               aria-label={label}
               title={label}
+              onMouseEnter={() => {
+                if (!active) router.prefetch(href);
+              }}
               onClick={(e) => {
                 // Skip re-navigating to the page we're already on, and let
                 // modified clicks (open in new tab, etc.) behave natively.
@@ -326,7 +330,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
         <MobileFloatingChrome user={user} showAddExpense={pathname === "/dashboard"} />
         <DesktopIdentityChip user={user} />
 
-        <main className="flex-1 overflow-y-auto pb-24 pt-16 md:pb-32 md:pt-24">
+        <main id="app-scroll-container" className="flex-1 overflow-y-auto pb-24 pt-16 md:pb-32 md:pt-24">
           <PageTransition>{children}</PageTransition>
         </main>
 

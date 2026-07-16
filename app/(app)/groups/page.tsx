@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Users, ChevronRight, Loader2, X } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getGroups, createGroup } from "@/services/groups";
 import type { Group } from "@/types";
 
@@ -26,49 +27,45 @@ function formatDate(d: string) {
 
 export default function GroupsPage() {
   const router = useRouter();
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  // Create modal state
+  const { data: groups = [], isLoading, error } = useQuery({
+    queryKey: ["groups"],
+    queryFn: getGroups,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (name: string) => createGroup(name),
+    onSuccess: (group) => {
+      queryClient.setQueryData<Group[]>(["groups"], (prev) =>
+        prev ? [group, ...prev] : [group]
+      );
+      router.push(`/groups/${group.id}`);
+    },
+  });
+
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState("");
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState("");
 
-  useEffect(() => {
-    getGroups()
-      .then(setGroups)
-      .catch(() => setError("Failed to load groups."))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleCreate = async () => {
+  const handleCreate = () => {
     if (!newName.trim()) return;
-    setCreating(true);
-    setCreateError("");
-    try {
-      const group = await createGroup(newName.trim());
-      setGroups((prev) => [group, ...prev]);
-      setShowCreate(false);
-      setNewName("");
-      router.push(`/groups/${group.id}`);
-    } catch {
-      setCreateError("Could not create group. Try again.");
-    } finally {
-      setCreating(false);
-    }
+    createMutation.mutate(newName.trim(), {
+      onSuccess: () => {
+        setShowCreate(false);
+        setNewName("");
+      },
+      onError: () => {},
+    });
   };
 
   return (
     <div className="min-h-screen" style={{ background: "var(--evven-background)" }}>
       <div className="max-w-2xl mx-auto px-4 py-8">
-
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: "var(--evven-text-muted)" }}>
-              Groups · {loading ? "loading" : `${groups.length} active`}
+              Groups · {isLoading ? "loading" : `${groups.length} active`}
             </p>
             <h1 className="text-2xl font-medium" style={{ color: "var(--evven-text-primary)" }}>
               Groups
@@ -85,7 +82,7 @@ export default function GroupsPage() {
         </div>
 
         {/* Loading */}
-        {loading && (
+        {isLoading && (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div
@@ -98,14 +95,14 @@ export default function GroupsPage() {
         )}
 
         {/* Error */}
-        {error && !loading && (
+        {error && !isLoading && (
           <div className="card rounded-[var(--evven-radius-card)] p-4 text-sm" style={{ color: "var(--evven-error)" }}>
-            {error}
+            Failed to load groups.
           </div>
         )}
 
         {/* Empty state */}
-        {!loading && !error && groups.length === 0 && (
+        {!isLoading && !error && groups.length === 0 && (
           <div className="card rounded-[var(--evven-radius-card)] p-10 text-center">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
@@ -131,7 +128,7 @@ export default function GroupsPage() {
         )}
 
         {/* Groups list */}
-        {!loading && groups.length > 0 && (
+        {!isLoading && groups.length > 0 && (
           <div className="space-y-2">
             {groups.map((g, i) => {
               const color = GROUP_COLORS[i % GROUP_COLORS.length];
@@ -139,6 +136,7 @@ export default function GroupsPage() {
                 <Link
                   key={g.id}
                   href={`/groups/${g.id}`}
+                  onMouseEnter={() => router.prefetch(`/groups/${g.id}`)}
                   className="card flex items-center gap-4 rounded-[var(--evven-radius-card)] px-4 py-3.5 transition-all hover:bg-(--evven-surface) group"
                 >
                   <div
@@ -204,18 +202,20 @@ export default function GroupsPage() {
               }}
             />
 
-            {createError && (
-              <p className="text-xs mb-3" style={{ color: "var(--evven-error)" }}>{createError}</p>
+            {createMutation.isError && (
+              <p className="text-xs mb-3" style={{ color: "var(--evven-error)" }}>
+                Could not create group. Try again.
+              </p>
             )}
 
             <button
               onClick={handleCreate}
-              disabled={!newName.trim() || creating}
+              disabled={!newName.trim() || createMutation.isPending}
               className="w-full py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 transition-opacity"
               style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
             >
-              {creating ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
-              {creating ? "Creating…" : "Create group"}
+              {createMutation.isPending ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
+              {createMutation.isPending ? "Creating…" : "Create group"}
             </button>
           </div>
         </div>

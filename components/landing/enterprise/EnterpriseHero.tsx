@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import Grainient from "@/components/ui/Grainient";
+import dynamic from "next/dynamic";
+
+const Grainient = dynamic(() => import("@/components/ui/Grainient"), { ssr: false });
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
