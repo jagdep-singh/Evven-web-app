@@ -5,7 +5,9 @@ import Image from "next/image";
 import gsap from "gsap";
 import Link from "next/link";
 
-import Grainient from "@/components/ui/Grainient";
+import dynamic from "next/dynamic";
+
+const Grainient = dynamic(() => import("@/components/ui/Grainient"), { ssr: false });
 import { ArrowRight } from "lucide-react";
 
 export function Hero() {

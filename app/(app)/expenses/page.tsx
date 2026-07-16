@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Edit3, Loader2, Plus, Receipt, Search, Trash2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FriendSummaryLine, getGhostExpenseSummary } from "@/components/expenses/friends";
 import { deletePersonalExpense, getPersonalExpenses } from "@/services/expenses";
 import { EXPENSE_CATEGORIES, getCategoryMeta } from "@/lib/expense-categories";
@@ -21,31 +22,23 @@ function formatDate(expense: PersonalExpense) {
 }
 
 export default function ExpensesPage() {
-  const [expenses, setExpenses] = useState<PersonalExpense[]>([]);
+  const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-  useEffect(() => {
-    let active = true;
+  const { data: expenses = [], isLoading, error } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: getPersonalExpenses,
+  });
 
-    getPersonalExpenses()
-      .then((data) => {
-        if (active) setExpenses(data);
-      })
-      .catch(() => {
-        if (active) setError("Could not load your expenses.");
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const deleteMutation = useMutation({
+    mutationFn: deletePersonalExpense,
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<PersonalExpense[]>(["expenses"], (prev) =>
+        prev ? prev.filter((e) => e.id !== id) : []
+      );
+    },
+  });
 
   const filteredExpenses = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -66,18 +59,9 @@ export default function ExpensesPage() {
 
   const total = filteredExpenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
 
-  const handleDelete = async (expense: PersonalExpense) => {
+  const handleDelete = (expense: PersonalExpense) => {
     if (!window.confirm(`Delete "${expense.title}"?`)) return;
-
-    setDeletingId(expense.id);
-    try {
-      await deletePersonalExpense(expense.id);
-      setExpenses((current) => current.filter((item) => item.id !== expense.id));
-    } catch {
-      setError("Could not delete that expense.");
-    } finally {
-      setDeletingId(null);
-    }
+    deleteMutation.mutate(expense.id);
   };
 
   return (
@@ -86,7 +70,7 @@ export default function ExpensesPage() {
         <div className="mb-7 flex items-start justify-between gap-4">
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Expenses · {loading ? "loading" : `${expenses.length} logged`}
+              Expenses · {isLoading ? "isLoading" : `${expenses.length} logged`}
             </p>
             <h1 className="text-2xl font-medium">Expenses</h1>
           </div>
@@ -180,11 +164,11 @@ export default function ExpensesPage() {
 
         {error && (
           <div className="card mb-4 rounded-(--evven-radius-card) p-4 text-sm" style={{ color: "var(--evven-error)" }}>
-            {error}
+            Could not load your expenses.
           </div>
         )}
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex h-48 items-center justify-center">
             <Loader2 size={20} className="animate-spin text-primary" />
           </div>
@@ -247,12 +231,12 @@ export default function ExpensesPage() {
                   </Link>
                   <button
                     onClick={() => void handleDelete(expense)}
-                    disabled={deletingId === expense.id}
+                    disabled={deleteMutation.isPending}
                     aria-label={`Delete ${expense.title}`}
                     className="rounded-lg p-2 text-muted-foreground hover:bg-(--evven-surface) disabled:opacity-50"
-                    style={{ color: deletingId === expense.id ? "var(--evven-text-muted)" : undefined }}
+                    style={{ color: deleteMutation.isPending ? "var(--evven-text-muted)" : undefined }}
                   >
-                    {deletingId === expense.id ? (
+                    {deleteMutation.isPending ? (
                       <Loader2 size={14} className="animate-spin" />
                     ) : (
                       <Trash2 size={14} />

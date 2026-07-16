@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuthStore } from "@/store/auth-store";
 import Link from "next/link";
 import api from "@/lib/api";
 import { getCategoryMeta } from "@/lib/expense-categories";
-import { Plus, Receipt, User, Users } from "lucide-react";
+import { Plus, Receipt, Users } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import PixelShadowCanvas from "@/components/dashboard/PixelShadowCanvas";
 
 function formatAmount(amount: string | number, currency = "₹") {
   const n = Number(amount);
@@ -15,6 +17,19 @@ function formatAmount(amount: string | number, currency = "₹") {
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+}
+
+function formatRelativeTime(dateStr: string) {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "yesterday";
+  if (days < 7) return `${days}d ago`;
+  return formatDate(dateStr);
 }
 
 function getInitials(name: string) {
@@ -92,33 +107,23 @@ type DashboardData = {
   analytics: { total_spent: number; expense_count: number; spending_by_category: Record<string, number> } | null;
   groups: Array<{ id: string; name: string; created_by: string; created_at: string }>;
   personalExpenses: Array<{ id: string; title: string; amount: string; category: string | null; created_at: string }>;
-  loading: boolean;
-  error: string | null;
 };
 
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
-  const [data, setData] = useState<DashboardData>({
-    analytics: null,
-    groups: [],
-    personalExpenses: [],
-    loading: true,
-    error: null,
-  });
-
   const [activeTab, setActiveTab] = useState<"personal" | "group">("personal");
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    Promise.allSettled([
-      api.get("/expenses/personal-data").then((response) => response.data),
-      api.get("/groups/").then((response) => response.data),
-      api.get("/expenses/").then((response) => response.data),
-    ]).then(([analyticsRes, groupsRes, expensesRes]) => {
-      setData({
+  const { data, isLoading } = useQuery<DashboardData>({
+    queryKey: ["dashboard"],
+    queryFn: async () => {
+      const [analyticsRes, groupsRes, expensesRes] = await Promise.allSettled([
+        api.get("/expenses/personal-data").then((r) => r.data),
+        api.get("/groups/").then((r) => r.data),
+        api.get("/expenses/").then((r) => r.data),
+      ]);
+      return {
         analytics:
           analyticsRes.status === "fulfilled" && analyticsRes.value?.data
             ? analyticsRes.value.data
@@ -131,11 +136,17 @@ export default function DashboardPage() {
           expensesRes.status === "fulfilled" && Array.isArray(expensesRes.value?.data)
             ? expensesRes.value.data.slice(0, 5)
             : [],
-        loading: false,
-        error: null,
-      });
-    });
-  }, [isAuthenticated]);
+      };
+    },
+    enabled: isAuthenticated,
+    staleTime: 30 * 1000,
+  });
+
+  const { analytics, groups, personalExpenses } = data ?? {
+    analytics: null,
+    groups: [],
+    personalExpenses: [],
+  };
 
   const greeting = () => {
     const h = new Date().getHours();
@@ -143,8 +154,6 @@ export default function DashboardPage() {
     if (h < 17) return "Good afternoon";
     return "Good evening";
   };
-
-  const { analytics, groups, personalExpenses, loading } = data;
 
   const categoryEntries = analytics?.spending_by_category
     ? Object.entries(analytics.spending_by_category)
@@ -160,6 +169,12 @@ export default function DashboardPage() {
       ? Math.round((Number(topCategory[1]) / analytics.total_spent) * 100)
       : 65;
   const firstName = user?.name?.split(" ")[0] ?? "there";
+
+  const avgExpense =
+    analytics?.total_spent && analytics.expense_count
+      ? analytics.total_spent / analytics.expense_count
+      : null;
+  const lastExpense = personalExpenses[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -212,37 +227,55 @@ export default function DashboardPage() {
 
         {/* Hero */}
         <div
-          className="mb-4 overflow-hidden rounded-[30px] p-5 sm:p-6"
+          className="relative isolate mb-4 overflow-hidden rounded-[30px] p-5 sm:p-6"
           style={{ background: "var(--evven-accent-primary)", color: "var(--evven-text-inverse)" }}
         >
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <PixelShadowCanvas />
+
+          <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               
               <p className="text-xl font-medium leading-snug sm:text-2xl">
                 You&apos;ve spent {analytics ? formatAmount(analytics.total_spent) : "—"} across {groups.length} {groups.length === 1 ? "group" : "groups"} this month.
               </p>
               <p className="mt-3 max-w-xl text-sm leading-6 opacity-85">
-                Keep momentum going with a quick view of your activity, recent splits, and the next expense to log.
+                {isLoading ? (
+                  "Loading your activity…"
+                ) : topCategory ? (
+                  <>
+                    <span style={{ fontWeight: 500 }}>{getCategoryMeta(topCategory[0]).label}</span> leads this
+                    month at {topCategoryShare}% of total spend
+                    {lastExpense ? ` · last logged ${formatRelativeTime(lastExpense.created_at)}` : ""}.
+                  </>
+                ) : (
+                  "Log a few expenses to see where your money's going this month."
+                )}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2">
+              {topCategory && (
+                <div
+                  className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm"
+                  style={{ borderColor: "color-mix(in srgb, white 24%, transparent)", background: "color-mix(in srgb, white 10%, transparent)" }}
+                >
+                  <span
+                    className="size-1.5 shrink-0 rounded-full"
+                    style={{ background: getCategoryMeta(topCategory[0]).text }}
+                  />
+                  {getCategoryMeta(topCategory[0]).label} · {formatAmount(topCategory[1])}
+                </div>
+              )}
               <div
                 className="rounded-full border px-3 py-1.5 text-sm"
                 style={{ borderColor: "color-mix(in srgb, white 24%, transparent)", background: "color-mix(in srgb, white 10%, transparent)" }}
               >
-                {analytics?.expense_count ?? 0} expenses
-              </div>
-              <div
-                className="rounded-full border px-3 py-1.5 text-sm"
-                style={{ borderColor: "color-mix(in srgb, white 24%, transparent)", background: "color-mix(in srgb, white 10%, transparent)" }}
-              >
-                {groups.length} active groups
+                {avgExpense ? `${formatAmount(avgExpense)} avg / expense` : `${analytics?.expense_count ?? 0} expenses`}
               </div>
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div className="relative z-10 mt-5 flex flex-wrap items-center gap-3">
             <Link
               href="/expenses/new"
               className="inline-flex items-center gap-2 rounded-full bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:opacity-90"
@@ -270,7 +303,7 @@ export default function DashboardPage() {
           />
           <RingStat
             label="Active groups"
-            value={loading ? "—" : String(groups.length)}
+            value={isLoading ? "—" : String(groups.length)}
             sub="groups you're part of"
             progress={Math.min(75, Math.max(35, groups.length * 15))}
           />
@@ -304,7 +337,7 @@ export default function DashboardPage() {
                 All →
               </Link>
             </div>
-            {loading ? (
+            {isLoading ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
                   <div
@@ -368,7 +401,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-medium">Spending by category</span>
             </div>
-            {loading ? (
+            {isLoading ? (
               <div className="space-y-3">
                 {[1, 2, 3, 4].map((i) => (
                   <div
@@ -472,7 +505,7 @@ export default function DashboardPage() {
 
           {activeTab === "personal" && (
             <div>
-              {loading ? (
+              {isLoading ? (
                 <div className="space-y-3">
                   {[1, 2, 3].map((i) => (
                     <div

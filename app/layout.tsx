@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { JetBrains_Mono, Xanh_Mono, Homemade_Apple, Baskervville, Crimson_Text, Instrument_Serif } from "next/font/google";
 import AuthProvider from "@/components/shared/auth-provider";
+import { QueryProvider } from "@/providers/query-provider";
 import DesktopVersionBadge from "@/components/shared/desktop-version-badge";
 
 const jetBrains = JetBrains_Mono({
@@ -78,12 +79,14 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>
-          <AuthProvider>
-            {children}
-            <DesktopVersionBadge />
-          </AuthProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              {children}
+              <DesktopVersionBadge />
+            </AuthProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
