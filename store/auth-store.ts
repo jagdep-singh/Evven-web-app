@@ -13,6 +13,7 @@ import {
   getRefreshToken,
   isDesktop,
   redirectToDesktopLogin,
+  shouldRefreshDesktopAccessToken,
   storeAuthTokens,
 } from "@/lib/desktop";
 
@@ -73,15 +74,40 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     const accessToken = getAccessToken();
     const refreshToken = getRefreshToken();
+    const restoreWithRefreshToken = async () => {
+      if (!refreshToken) {
+        return false;
+      }
+
+      const refreshed = await refreshSession(refreshToken);
+      storeAuthTokens(refreshed.tokens);
+      const data = await getUser();
+      finish({
+        user: data,
+        isAuthenticated: true,
+        token: refreshed.tokens.access_token,
+      });
+      return true;
+    };
 
     try {
+      if (isDesktop() && shouldRefreshDesktopAccessToken() && refreshToken) {
+        try {
+          if (await restoreWithRefreshToken()) {
+            return;
+          }
+        } catch {
+          // Fall back to the access token path below if refresh fails.
+        }
+      }
+
       if (accessToken) {
         try {
           const data = await getUser();
           finish({
             user: data,
             isAuthenticated: true,
-            token: accessToken,
+            token: getAccessToken(),
           });
           return;
         } catch {
@@ -92,14 +118,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       }
 
       if (refreshToken) {
-        const refreshed = await refreshSession(refreshToken);
-        storeAuthTokens(refreshed.tokens);
-        const data = await getUser();
-        finish({
-          user: data,
-          isAuthenticated: true,
-          token: refreshed.tokens.access_token,
-        });
+        await restoreWithRefreshToken();
         return;
       }
 
