@@ -4,6 +4,7 @@ const DESKTOP_RUNTIME_VALUE = "desktop";
 const ACCESS_TOKEN_KEY = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
 const DESKTOP_LOGIN_PATH = "/login";
+const DESKTOP_REFRESH_SKEW_MS = 2 * 60 * 1000;
 
 export function isDesktop() {
   if (typeof window === "undefined") return false;
@@ -36,6 +37,37 @@ export function getRefreshToken() {
 
 export function getStoredAuthToken() {
   return getAccessToken();
+}
+
+function decodeJwtExp(token: string) {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return null;
+
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
+    const decoded = atob(padded);
+    const parsed = JSON.parse(decoded) as { exp?: unknown };
+
+    return typeof parsed.exp === "number" ? parsed.exp * 1000 : null;
+  } catch {
+    return null;
+  }
+}
+
+export function shouldRefreshDesktopAccessToken() {
+  if (typeof window === "undefined" || !isDesktop()) return false;
+
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return false;
+
+  const accessToken = getAccessToken();
+  if (!accessToken) return true;
+
+  const accessTokenExpiry = decodeJwtExp(accessToken);
+  if (!accessTokenExpiry) return false;
+
+  return accessTokenExpiry - Date.now() <= DESKTOP_REFRESH_SKEW_MS;
 }
 
 export function storeAuthTokens(tokens: {

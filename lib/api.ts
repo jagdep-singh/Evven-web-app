@@ -5,6 +5,7 @@ import {
   getRefreshToken,
   isDesktop,
   redirectToDesktopLogin,
+  shouldRefreshDesktopAccessToken,
   storeAuthTokens,
 } from "./desktop";
 
@@ -54,9 +55,17 @@ async function refreshDesktopAccessToken() {
   return refreshPromise;
 }
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
   if (typeof window !== "undefined") {
-    const token = getAccessToken();
+    let token = getAccessToken();
+
+    if (isDesktop() && shouldRefreshDesktopAccessToken()) {
+      const refreshedToken = await refreshDesktopAccessToken();
+      if (refreshedToken) {
+        token = refreshedToken;
+      }
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
