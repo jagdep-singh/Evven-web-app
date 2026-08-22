@@ -8,6 +8,7 @@ import {
   shouldRefreshDesktopAccessToken,
   storeAuthTokens,
 } from "./desktop";
+import { reportError } from "./error-log";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -80,6 +81,21 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
+    // Report 500 errors to ops log
+    if (
+      typeof window !== "undefined" &&
+      error.response?.status === 500
+    ) {
+      const errorId = error.response.data?.error_id;
+      reportError(
+        new Error(`API 500${errorId ? ` (${errorId})` : ""}: ${originalRequest?.url}`),
+        {
+          route: window.location.pathname,
+          method: originalRequest?.method?.toUpperCase(),
+        }
+      );
+    }
 
     if (
       typeof window === "undefined" ||

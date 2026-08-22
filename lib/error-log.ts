@@ -1,6 +1,5 @@
 import axios from "axios";
 import { APP_VERSION } from "./version";
-import { useAuthStore } from "@/store/auth-store";
 
 const DEDUPE_KEY_PREFIX = "evven_error_dedupe";
 const DEDUPE_WINDOW_MS = 60_000;
@@ -59,6 +58,7 @@ const errorClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
   timeout: 5000,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 export function reportError(
@@ -85,8 +85,6 @@ export function reportError(
     stack_trace: stack,
     route,
     method: context?.method,
-    user_id: useAuthStore.getState().user?.id ?? null,
-    user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
     client_timestamp: new Date().toISOString(),
   };
 
